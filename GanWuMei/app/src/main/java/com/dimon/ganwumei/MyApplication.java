@@ -18,23 +18,28 @@ public class MyApplication extends Application {
 
     private AppComponent appComponent;
 
-    public static MyApplication get(Context context){
-        return (MyApplication)context.getApplicationContext();
+    public static MyApplication get(Context context) {
+        return (MyApplication) context.getApplicationContext();
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        initializeInjector();
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this)
                 .schemaVersion(2)
                 .deleteRealmIfMigrationNeeded()
                 .build());
+    }
 
-        appComponent = DaggerAppComponent.builder()
+    public AppComponent getAppComponent() {
+        return this.appComponent;
+    }
+
+    private void initializeInjector() {
+        this.appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
     }
 
-    public AppComponent getAppComponent() {
-        return appComponent;
-    }
 }

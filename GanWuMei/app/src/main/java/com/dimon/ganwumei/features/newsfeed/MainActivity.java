@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.features.base.BaseActivity;
+import com.dimon.ganwumei.internal.components.GanWuComponent;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -47,24 +48,12 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     MaterialViewPager mViewPager;
 
     private static final String TAG = "MainActivity";
-    private LocalBroadcastManager localBroadcastManager;
-    private boolean isFetching = false;
-
     private Activity activity;
-
     private Context mContext;
-
-    private GanhuoAdapter adapter;
-    private StaggeredGridLayoutManager layoutManager;
-    private RecyclerViewMaterialAdapter mAdapter;
-    private List<String> mTitles;
-
     private Bundle reenterState;
-
-    private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
-
+    private GanWuComponent ganWuComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +67,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         initView();
         initDrawerFragment();
         setNavigationView();
+        initializeInjector();
     }
+
+    //初始化注入
+    private void initializeInjector() {
+        this.ganWuComponent = DaggerganWuComponent.builder()
+                .appComponent(getAppComponent())
+                .activityModule(getActivityModule())
+                .build();
+    }
+
 
 
     private void setNavigationView() {

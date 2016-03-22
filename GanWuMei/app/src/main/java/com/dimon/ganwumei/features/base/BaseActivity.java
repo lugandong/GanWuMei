@@ -18,14 +18,20 @@ import com.dimon.ganwumei.internal.modules.AppModule;
  * Created by Dimon on 2016/3/3.
  */
 
-public class BaseActivity extends AppCompatActivity{
+public abstract   class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("BaseActivity",getClass().getSimpleName());
-        getActivityComponent().inject(this);
+        this.getAppComponent().inject(this);
+    }
 
+    protected AppComponent getAppComponent() {
+        return ((MyApplication)getApplication()).getAppComponent();
+    }
 
+    protected ActivityModule getActivityModule() {
+        return new ActivityModule(this);
     }
 
     protected ActivityComponent getActivityComponent(){
@@ -35,13 +41,10 @@ public class BaseActivity extends AppCompatActivity{
                 .build();
     }
 
-    protected ActivityModule getActivityModule(){
-        return new ActivityModule(this);
-    }
 
-    public AppComponent getAppComponent() {
-        return DaggerAppComponent.builder()
-                .appModule(new AppModule((MyApplication)getApplicationContext()))
-                .build();
-    }
+//    public AppComponent getAppComponent() {
+//        return DaggerAppComponent.builder()
+//                .appModule(new AppModule((MyApplication)getApplicationContext()))
+//                .build();
+//    }
 }

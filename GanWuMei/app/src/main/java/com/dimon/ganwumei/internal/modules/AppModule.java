@@ -1,6 +1,5 @@
 package com.dimon.ganwumei.internal.modules;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.dimon.ganwumei.MyApplication;
@@ -25,12 +24,12 @@ public class AppModule {
     @Provides
     @Singleton
     Context provideApplicationContext() {
-        return application;
+        return this.application;
     }
-
-    @Provides
-    @Singleton
-    public Application provideApplication(){
-        return application;
-    }
+//
+//    @Provides
+//    @Singleton
+//    public Application provideApplication(){
+//        return application;
+//    }
 }

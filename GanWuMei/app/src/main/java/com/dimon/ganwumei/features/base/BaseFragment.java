@@ -1,20 +1,19 @@
 package com.dimon.ganwumei.features.base;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
-
-import javax.inject.Inject;
+import android.widget.Toast;
 
 /**
  * Created by Dimon on 2016/3/2.
  */
-public class BaseFragment extends Fragment {
-    @Inject Activity activity;
+public abstract  class BaseFragment extends Fragment {
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        activity = getActivity();
+    /**
+     * show Toast Message
+     * @param message
+     */
+    protected void showToastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }

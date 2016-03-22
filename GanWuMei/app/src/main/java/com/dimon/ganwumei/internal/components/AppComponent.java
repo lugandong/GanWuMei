@@ -1,9 +1,8 @@
 package com.dimon.ganwumei.internal.components;
 
-import android.app.Application;
 import android.content.Context;
 
-import com.dimon.ganwumei.MyApplication;
+import com.dimon.ganwumei.features.base.BaseActivity;
 import com.dimon.ganwumei.internal.modules.ApiModule;
 import com.dimon.ganwumei.internal.modules.AppModule;
 
@@ -17,10 +16,8 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class , ApiModule.class})
 public interface AppComponent {
-    void inject(MyApplication application);
+    void inject(BaseActivity baseActivity);
 
-
-    Application application();
     Context context();
 
 }
