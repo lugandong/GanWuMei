@@ -76,10 +76,17 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
         tabList.add("iOS");
         List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < tabList.size(); i++) {
-            Fragment fragment = new GanWuFragment();
-            Bundle bundle = new Bundle();
-            fragment.setArguments(bundle);
-            fragmentList.add(fragment);
+            if (i == 0){
+                Fragment fragment = new GanWuFragment();
+                Bundle bundle = new Bundle();
+                fragment.setArguments(bundle);
+                fragmentList.add(fragment);
+            }else if (i == 1){
+
+            }else {
+
+            }
+
         }
         TabFragmentAdapter fragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), fragmentList, tabList);
         viewPager.setAdapter(fragmentAdapter);//给ViewPager设置适配器

@@ -41,3 +41,4 @@ public interface LoadDataView {
      */
     Context context();
 }
+
