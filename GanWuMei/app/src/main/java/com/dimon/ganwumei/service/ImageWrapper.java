@@ -3,9 +3,7 @@ package com.dimon.ganwumei.service;
 
 import com.dimon.ganwumei.database.Image;
 
-/**
- * Created by Dimon on 2016/3/11.
- */
+
 public class ImageWrapper {
     public final String url;
 

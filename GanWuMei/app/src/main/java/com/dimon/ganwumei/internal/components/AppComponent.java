@@ -2,7 +2,7 @@ package com.dimon.ganwumei.internal.components;
 
 import android.content.Context;
 
-import com.dimon.ganwumei.features.base.BaseActivity;
+import com.dimon.ganwumei.features.newsfeed.activity.BaseActivity;
 import com.dimon.ganwumei.internal.modules.ApiModule;
 import com.dimon.ganwumei.internal.modules.AppModule;
 

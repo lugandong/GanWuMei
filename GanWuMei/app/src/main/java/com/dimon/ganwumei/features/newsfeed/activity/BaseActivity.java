@@ -1,4 +1,5 @@
-package com.dimon.ganwumei.features.base;
+package com.dimon.ganwumei.features.newsfeed.activity;
+
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +10,7 @@ import com.dimon.ganwumei.MyApplication;
 import com.dimon.ganwumei.internal.components.ActivityComponent;
 import com.dimon.ganwumei.internal.components.AppComponent;
 import com.dimon.ganwumei.internal.components.DaggerActivityComponent;
-import com.dimon.ganwumei.internal.components.DaggerAppComponent;
 import com.dimon.ganwumei.internal.modules.ActivityModule;
-import com.dimon.ganwumei.internal.modules.AppModule;
 
 
 /**
@@ -25,6 +24,7 @@ public abstract   class BaseActivity extends AppCompatActivity{
         Log.d("BaseActivity",getClass().getSimpleName());
         this.getAppComponent().inject(this);
     }
+
 
     protected AppComponent getAppComponent() {
         return ((MyApplication)getApplication()).getAppComponent();

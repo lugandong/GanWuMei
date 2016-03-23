@@ -1,4 +1,4 @@
-package com.dimon.ganwumei.features.newsfeed;
+package com.dimon.ganwumei.features.newsfeed.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -24,20 +22,22 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.features.base.BaseActivity;
+import com.dimon.ganwumei.database.Image;
+import com.dimon.ganwumei.features.newsfeed.fragment.RecyclerViewFragment;
+import com.dimon.ganwumei.internal.HasComponent;
+import com.dimon.ganwumei.internal.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.internal.components.GanWuComponent;
 import com.github.florent37.materialviewpager.MaterialViewPager;
-import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
+        ,RecyclerViewFragment.GanWuListListener
+        ,HasComponent<GanWuComponent> {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.navigation)
@@ -53,13 +53,12 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Bundle reenterState;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
+
     private GanWuComponent ganWuComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //((MyApplication)getApplicationComponent()).getAppComponent().inject(this);
-        getActivityComponent().inject(this);
         MobclickAgent.updateOnlineConfig(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -69,15 +68,17 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setNavigationView();
         initializeInjector();
     }
-
-    //初始化注入
     private void initializeInjector() {
-        this.ganWuComponent = DaggerganWuComponent.builder()
+        this.ganWuComponent = DaggerGanWuComponent.builder()
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
     }
 
+    @Override
+    public GanWuComponent getComponent() {
+        return ganWuComponent;
+    }
 
 
     private void setNavigationView() {
@@ -351,5 +352,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
 
+    @Override
+    public void onGanWuClicked(Image image) {
 
+    }
 }
