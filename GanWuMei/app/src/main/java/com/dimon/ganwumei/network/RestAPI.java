@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.network;
 
 
+import com.dimon.ganwumei.database.DayGanhuoResult;
 import com.dimon.ganwumei.database.GanhuoResult;
 
 import retrofit2.http.GET;
@@ -37,13 +38,13 @@ public interface RestAPI {
             @Path("limit") int limit,
             @Path("page") int page
     );
-//
-//    @GET("/day/{year}/{month}/{day}")
-//    Observable<DayGanhuoResult> getGoodsByDay(
-//            @Path("year") int year,
-//            @Path("month") int month,
-//            @Path("day") int day
-//    );
+
+    @GET("/day/{year}/{month}/{day}")
+    Observable<DayGanhuoResult> getGoodsByDay(
+            @Path("year") int year,
+            @Path("month") int month,
+            @Path("day") int day
+    );
 
 
 }
