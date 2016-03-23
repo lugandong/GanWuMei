@@ -1,6 +1,6 @@
 package com.dimon.ganwumei.internal.components;
 
-import com.dimon.ganwumei.features.newsfeed.fragment.RecyclerViewFragment;
+import com.dimon.ganwumei.features.newsfeed.fragment.GanWuFragment;
 import com.dimon.ganwumei.internal.ActivityScope;
 import com.dimon.ganwumei.internal.modules.ActivityModule;
 import com.dimon.ganwumei.internal.modules.GanWuModule;
@@ -13,7 +13,7 @@ import dagger.Component;
 @ActivityScope
 @Component(dependencies = AppComponent.class,modules = {ActivityModule.class, GanWuModule.class})
 public interface GanWuComponent extends ActivityComponent{
-    void inject(RecyclerViewFragment recyclerViewFragment);
+    void inject(GanWuFragment ganWuFragment);
 
 
 }

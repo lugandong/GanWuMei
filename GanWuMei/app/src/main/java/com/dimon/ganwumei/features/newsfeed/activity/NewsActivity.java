@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entity.News;
+import com.dimon.ganwumei.database.entitys.News;
 
 /**
  * Created by Dimon on 2016/3/23.

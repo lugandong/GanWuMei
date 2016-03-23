@@ -3,8 +3,6 @@ package com.dimon.ganwumei.internal.modules;
 import android.app.Activity;
 
 import com.dimon.ganwumei.internal.ActivityScope;
-import com.dimon.ganwumei.network.RestAPI;
-import com.dimon.ganwumei.presenters.MainActivityPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,9 +24,5 @@ public class ActivityModule {
         return this.activity;
     }
 
-    @Provides
-    @ActivityScope
-    MainActivityPresenter provideMainActivityPresenter(RestAPI apiService) {
-        return new MainActivityPresenter(apiService);
-    }
+
 }

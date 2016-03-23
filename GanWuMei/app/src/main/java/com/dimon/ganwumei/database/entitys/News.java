@@ -1,4 +1,4 @@
-package com.dimon.ganwumei.database.entity;
+package com.dimon.ganwumei.database.entitys;
 
 import java.io.Serializable;
 
@@ -15,9 +15,9 @@ public class News implements Serializable {
      * Constructs a new instance of {@code Object}.
      */
     public News(String name, String age, int photoId) {
-        this.title=name;
-        this.desc=age;
-        this.photoId=photoId;
+        this.title = name;
+        this.desc = age;
+        this.photoId = photoId;
     }
 
     public void setDesc(String desc) {

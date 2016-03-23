@@ -1,8 +1,6 @@
 package com.dimon.ganwumei.internal.modules;
 
 
-import com.dimon.ganwumei.database.DayGanhuoResult;
-import com.dimon.ganwumei.database.GanhuoResult;
 import com.dimon.ganwumei.network.RestAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,7 +16,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 /**
  * 网络接口
@@ -57,33 +54,5 @@ public class ApiModule {
 
     }
 
-    public Observable<GanhuoResult> getCommonGoods(String type, int limit, int page) {
-        if("Android".equalsIgnoreCase(type)){
-            return mWebService.getAndroidGoods(limit, page);
-        }
-        if("IOS".equalsIgnoreCase(type)){
-            return mWebService.getIosGoods(limit, page);
-        }
-        return mWebService.getAndroidGoods(limit, page);
-    }
 
-    public Observable<GanhuoResult> getAndroidGoods(int limit, int page) {
-        return mWebService.getAndroidGoods(limit, page);
-    }
-
-    public Observable<GanhuoResult> getIosGoods(int limit, int page) {
-        return mWebService.getIosGoods(limit, page);
-    }
-
-    public Observable<GanhuoResult> getAllGoods(int limit, int page) {
-        return mWebService.getAllGoods(limit, page);
-    }
-
-    public Observable<GanhuoResult> getBenefitsGoods(int limit, int page) {
-        return mWebService.getBenefitsGoods(limit, page);
-    }
-
-    public Observable<DayGanhuoResult> getGoodsByDay(int year, int month, int day) {
-        return mWebService.getGoodsByDay(year, month,day);
-    }
 }
