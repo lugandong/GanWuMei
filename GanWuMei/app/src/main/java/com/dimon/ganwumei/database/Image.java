@@ -12,7 +12,9 @@ import io.realm.annotations.PrimaryKey;
  * Created by Dimon on 2016/3/11.
  */
 public class Image extends RealmObject {
-    /**补充数据*/
+    /**
+     * 补充数据
+     */
     private int width = 0;
     private int height = 0;
     private int position = 0;
@@ -30,35 +32,35 @@ public class Image extends RealmObject {
     private String createdAt;
     private String _ns;
 
-    public static Image queryImageById(Realm realm,String objectId){
-        RealmResults<Image> results =  realm.where(Image.class).equalTo("_id",objectId).findAll();
-        if(results.size() > 0){
+    public static Image queryImageById(Realm realm, String objectId) {
+        RealmResults<Image> results = realm.where(Image.class).equalTo("_id", objectId).findAll();
+        if (results.size() > 0) {
             Image image = results.get(0);
             return image;
         }
         return null;
     }
 
-    public static Image queryImageByUrl(Realm realm,String objectId){
-        RealmResults<Image> results =  realm.where(Image.class).equalTo("_id",objectId).findAll();
-        if(results.size() > 0){
+    public static Image queryImageByUrl(Realm realm, String objectId) {
+        RealmResults<Image> results = realm.where(Image.class).equalTo("_id", objectId).findAll();
+        if (results.size() > 0) {
             Image image = results.get(0);
             return image;
         }
         return null;
     }
 
-    public static Image queryFirstZeroImg(Realm realm){
-        RealmResults<Image> results =  realm.where(Image.class).equalTo("width",0)
-                .findAllSorted("position", false);
-        if(results.size() > 0){
+    public static Image queryFirstZeroImg(Realm realm) {
+        RealmResults<Image> results = realm.where(Image.class).equalTo("width", 0)
+                .findAllSorted("position");
+        if (results.size() > 0) {
             Image image = results.get(0);
             return image;
         }
         return null;
     }
 
-    public static Image updateDbGoods(Image dbItem,Ganhuo ganhuo) {
+    public static Image updateDbGoods(Image dbItem, Ganhuo ganhuo) {
         dbItem.setWho(ganhuo.getWho());
         dbItem.setPublishedAt(ganhuo.getPublishedAt());
         dbItem.setDesc(ganhuo.getDesc());
