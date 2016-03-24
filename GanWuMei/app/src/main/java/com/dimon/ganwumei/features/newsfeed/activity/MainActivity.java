@@ -82,9 +82,15 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             }else if (i == 1){
-
+                Fragment fragment = new GanWuFragment();
+                Bundle bundle = new Bundle();
+                fragment.setArguments(bundle);
+                fragmentList.add(fragment);
             }else {
-
+                Fragment fragment = new GanWuFragment();
+                Bundle bundle = new Bundle();
+                fragment.setArguments(bundle);
+                fragmentList.add(fragment);
             }
 
         }
