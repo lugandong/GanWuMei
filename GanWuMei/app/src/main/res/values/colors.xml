@@ -26,4 +26,5 @@
 
     <color name="primary_light">#D7CCC8</color>
 
+    <color name="colorAccents">#FF4081</color>
 </resources>

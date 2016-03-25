@@ -44,10 +44,10 @@ dependencies {
     compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
-    //compile 'com.github.dexafree:materiallist:3.1.3'
     compile 'jp.wasabeef:recyclerview-animators:2.0.0'
 
     compile 'com.jakewharton:butterknife:7.0.1'// 标注
+    compile 'com.jakewharton:disklrucache:2.0.2'
 
     apt 'com.google.dagger:dagger-compiler:2.0.2' //指定注解处理器
     compile 'com.google.dagger:dagger:2.0.2' // dagger2公用api

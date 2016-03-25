@@ -6,6 +6,7 @@ import android.content.Context;
 import com.dimon.ganwumei.internal.components.AppComponent;
 import com.dimon.ganwumei.internal.components.DaggerAppComponent;
 import com.dimon.ganwumei.internal.modules.AppModule;
+import com.socks.library.KLog;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -16,6 +17,11 @@ import io.realm.RealmConfiguration;
  */
 public class MyApplication extends Application {
 
+    public static Context AppContenxt;
+    public static String version;
+    //调试模式(打印日志)？
+    private static boolean DEBUG=true;
+
     private AppComponent appComponent;
 
     public static MyApplication get(Context context) {
@@ -25,6 +31,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AppContenxt=getApplicationContext();
+        version="v1.0.0";
+        KLog.init(DEBUG);
         initializeInjector();
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this)
                 .schemaVersion(2)
