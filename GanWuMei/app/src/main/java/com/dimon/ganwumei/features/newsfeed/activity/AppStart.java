@@ -14,6 +14,8 @@ import com.dimon.ganwumei.api.FileStore;
 import com.dimon.ganwumei.api.thread.ThreadPoolManager;
 import com.dimon.ganwumei.features.UiHelper;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -32,6 +34,8 @@ public class AppStart extends BaseActivity {
     ImageView ivSplash;
     Animation scaleAnimation;
 
+    @Inject ThreadPoolManager threadPoolManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class AppStart extends BaseActivity {
         ButterKnife.bind(this);
         startAnima();
 
-        ThreadPoolManager.execute(new Runnable() {
+        threadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 Looper.prepare();
@@ -58,7 +62,7 @@ public class AppStart extends BaseActivity {
     }
 
     private void startAnima() {
-        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.7f, 0.0f, 1.7f, Animation.RELATIVE_TO_SELF, 0.5f,
+        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.7f, 1.0f, 1.7f, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new OvershootInterpolator());
         animation.setDuration(8500);

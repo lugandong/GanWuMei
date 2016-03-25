@@ -1,8 +1,10 @@
 package com.dimon.ganwumei.internal.modules;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.dimon.ganwumei.MyApplication;
+import com.dimon.ganwumei.api.thread.ThreadPoolManager;
 
 import javax.inject.Singleton;
 
@@ -26,10 +28,16 @@ public class AppModule {
     Context provideApplicationContext() {
         return this.application;
     }
-//
-//    @Provides
-//    @Singleton
-//    public Application provideApplication(){
-//        return application;
-//    }
+
+    @Provides
+    @Singleton
+    public Application provideApplication(){
+        return application;
+    }
+
+    @Provides
+    @Singleton
+    ThreadPoolManager provideThreadPoolManager(){
+        return new ThreadPoolManager();
+    }
 }
