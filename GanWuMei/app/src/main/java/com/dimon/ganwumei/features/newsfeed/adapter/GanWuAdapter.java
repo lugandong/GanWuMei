@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.database.entitys.News;
 import com.dimon.ganwumei.features.newsfeed.activity.NewsActivity;
+import com.dimon.ganwumei.util.ImageLoader;
 
 import java.util.List;
 
@@ -26,11 +27,13 @@ import javax.inject.Inject;
 public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHolder>{
 
     private List<News> newses;
+    private ImageLoader mImageLoader;
     @Inject Context context;
 
     public GanWuAdapter(List<News> newses,Context context) {
         this.newses = newses;
         this.context=context;
+        mImageLoader = ImageLoader.getInstance(3, ImageLoader.Type.LIFO);
     }
 
 
@@ -70,8 +73,10 @@ public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHold
     public void onBindViewHolder(GanWuAdapter.NewsViewHolder personViewHolder, int i) {
         final int j=i;
 
-        personViewHolder.news_photo.setImageResource(newses.get(i).getPhotoId());
-        personViewHolder.news_title.setText(newses.get(i).getTitle());
+        personViewHolder.news_photo.setImageResource(R.drawable.dog);
+//        DownloadImgUtils.downloadImgByUrl(Images.imageThumbUrls[i], personViewHolder.news_photo);
+//        //mImageLoader.loadImage(getItem(position), personViewHolder.news_photo, true);
+//        personViewHolder.news_title.setText(newses.get(i).getTitle());
         personViewHolder.news_desc.setText(newses.get(i).getDesc());
 
         //为btn_share btn_readMore cardView设置点击事件
@@ -92,7 +97,7 @@ public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHold
                 intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
                 intent.putExtra(Intent.EXTRA_TEXT, newses.get(j).getDesc());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(Intent.createChooser(intent, newses.get(j).getTitle()));
+//                context.startActivity(Intent.createChooser(intent, newses.get(j).getTitle()));
             }
         });
 

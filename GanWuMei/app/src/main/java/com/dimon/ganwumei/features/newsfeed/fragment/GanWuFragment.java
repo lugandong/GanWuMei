@@ -56,10 +56,10 @@ public class GanWuFragment extends Fragment implements GanWuListView {
     private void initData() {
         newsList = new ArrayList<>();
         //添加新闻
-        newsList.add(new News(getString(R.string.news_one_title), getString(R.string.news_one_desc), R.mipmap.news_one));
-        newsList.add(new News(getString(R.string.news_two_title), getString(R.string.news_two_desc), R.mipmap.news_two));
-        newsList.add(new News(getString(R.string.news_three_title), getString(R.string.news_three_desc), R.mipmap.news_three));
-        newsList.add(new News(getString(R.string.news_four_title), getString(R.string.news_four_desc), R.mipmap.news_four));
+//        newsList.add(new News(getString(R.string.news_one_title), getString(R.string.news_one_desc), Images.imageThumbUrls[0]));
+//        newsList.add(new News(getString(R.string.news_two_title), getString(R.string.news_two_desc), Images.imageThumbUrls[1]));
+//        newsList.add(new News(getString(R.string.news_three_title), getString(R.string.news_three_desc), Images.imageThumbUrls[2]));
+//        newsList.add(new News(getString(R.string.news_four_title), getString(R.string.news_four_desc), Images.imageThumbUrls[3]));
     }
 
     @Override

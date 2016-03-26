@@ -14,6 +14,7 @@ import com.dimon.ganwumei.internal.HasComponent;
 
 public abstract  class BaseFragment extends Fragment {
 
+
     /**
      * show Toast Message
      * @param message

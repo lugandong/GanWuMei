@@ -16,29 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Meizhi.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.dimon.ganwumei.network;
+package com.dimon.ganwumei.database;
 
+import com.dimon.ganwumei.database.entitys.Images;
 
-import com.dimon.ganwumei.database.GanWuData;
-import com.dimon.ganwumei.database.ImageData;
-
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import rx.Observable;
+import java.util.List;
 
 /**
- * Created by Dimon on 2016/3/11.
+ * Created by Dimon on 2016/3/26.
  */
-public interface RestAPI {
-
-    @GET("/data/福利/" + ImagesFactory.ImagesSize + "/{page}")
-    Observable<ImageData> getMeizhiData(
-            @Path("page") int page);
-
-    @GET("/day/{year}/{month}/{day}")
-    Observable<GanWuData> getGankData(
-            @Path("year") int year,
-            @Path("month") int month,
-            @Path("day") int day);
-
+public class ImageData extends BaseResult{
+    public List<Images> results;
 }

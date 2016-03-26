@@ -47,9 +47,10 @@ public class ApiModule {
         // config log
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
-                .connectTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(true) //设置出现错误进行重新连接。
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
-                .addInterceptor(logging)
+                .addInterceptor(logging)   //拦截器
                 .build();
 
     }
