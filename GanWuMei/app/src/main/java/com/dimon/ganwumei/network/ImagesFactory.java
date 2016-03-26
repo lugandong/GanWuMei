@@ -18,27 +18,27 @@
  */
 package com.dimon.ganwumei.network;
 
-
-import com.dimon.ganwumei.database.GanWuData;
-import com.dimon.ganwumei.database.ImageData;
-
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import rx.Observable;
+import javax.inject.Inject;
 
 /**
- * Created by Dimon on 2016/3/11.
+ * Created by Dimon on 2016/3/26.
  */
-public interface RestAPI {
+public class ImagesFactory {
+    @Inject RestAPI restAPI;
 
-    @GET("/data/福利/" + ImagesFactory.ImagesSize + "/{page}")
-    Observable<ImageData> getMeizhiData(
-            @Path("page") int page);
+    protected static final Object monitor = new Object();
+    static RestAPI sGanWuIOSingleton = null;
+    public static final int ImagesSize = 10;
 
-    @GET("/day/{year}/{month}/{day}")
-    Observable<GanWuData> getGankData(
-            @Path("year") int year,
-            @Path("month") int month,
-            @Path("day") int day);
+
+    public static RestAPI getGanWuIOSingleton() {
+        synchronized (monitor) {
+            if (sGanWuIOSingleton == null) {
+                sGanWuIOSingleton = new restAPI.getGanWuService();
+            }
+            return sGanWuIOSingleton;
+        }
+    }
+
 
 }

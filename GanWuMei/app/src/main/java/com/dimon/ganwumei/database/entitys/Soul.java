@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2015 Drakeet gmail.com>
  *
- * This file is part of Meizhi
+ * Copyright (C) 2015 Drakeet gmail.com>
+ * Copyright (C) 2015 GuDong <maoruibin9035@gmail.com>
  *
  * Meizhi is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Meizhi.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.dimon.ganwumei.database;
+package com.dimon.ganwumei.database.entitys;
+
+import java.io.Serializable;
 
 /**
- * Created by Dimon on 2016/3/18.
+ * Created by Dimon on 2016/3/26.
  */
-public class BaseResult {
-    private boolean error;
-
-    public boolean isError() {
-        return error;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
-    }
+public class Soul implements Serializable {
+    protected long id;
+    public String objectId;
 }
