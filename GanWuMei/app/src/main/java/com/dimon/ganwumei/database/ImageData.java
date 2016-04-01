@@ -18,7 +18,7 @@
  */
 package com.dimon.ganwumei.database;
 
-import com.dimon.ganwumei.database.entitys.Images;
+import com.dimon.ganwumei.database.entities.Images;
 
 import java.util.List;
 

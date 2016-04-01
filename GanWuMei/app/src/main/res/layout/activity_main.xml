@@ -4,7 +4,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.newsfeed.activity.MainActivity">
+    tools:context=".ui.newsfeed.activity.MainActivity">
     <!--主页面-->
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/rootLayout"
@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">

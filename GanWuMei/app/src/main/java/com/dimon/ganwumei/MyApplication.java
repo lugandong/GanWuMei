@@ -3,9 +3,9 @@ package com.dimon.ganwumei;
 import android.app.Application;
 import android.content.Context;
 
-import com.dimon.ganwumei.internal.components.AppComponent;
-import com.dimon.ganwumei.internal.components.DaggerAppComponent;
-import com.dimon.ganwumei.internal.modules.AppModule;
+import com.dimon.ganwumei.injector.components.AppComponent;
+import com.dimon.ganwumei.injector.components.DaggerAppComponent;
+import com.dimon.ganwumei.injector.modules.AppModule;
 import com.socks.library.KLog;
 
 import io.realm.Realm;
@@ -20,7 +20,7 @@ public class MyApplication extends Application {
     public static Context AppContenxt;
     public static String version;
     //调试模式(打印日志)？
-    private static boolean DEBUG=true;
+    private static boolean DEBUG = true;
 
     private AppComponent appComponent;
 
