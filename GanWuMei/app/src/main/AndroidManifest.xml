@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".features.newsfeed.activity.AppStart"
+            android:name=".ui.newsfeed.activity.AppStart"
             android:configChanges="orientation"
             android:label="@string/app_name">
             <intent-filter>
@@ -23,8 +23,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".features.newsfeed.activity.MainActivity">
+            android:name=".ui.newsfeed.activity.MainActivity">
         </activity>
-        <activity android:name=".features.newsfeed.activity.NewsActivity" />
+        <activity android:name=".ui.newsfeed.activity.NewsActivity" />
     </application>
 </manifest>
