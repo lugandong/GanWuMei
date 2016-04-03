@@ -20,7 +20,6 @@ package com.dimon.ganwumei.ui.base;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
@@ -46,28 +45,13 @@ public abstract class SwipeRefreshBaseActivity extends ToolbarActivity {
 
     @Override protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        trySetupSwipeRefresh();
+
     }
 
 
-    void trySetupSwipeRefresh() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_3,
-                    R.color.refresh_progress_2, R.color.refresh_progress_1);
-            // do not use lambda!!
-            mSwipeRefreshLayout.setOnRefreshListener(
-                    new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override public void onRefresh() {
-                            requestDataRefresh();
-                        }
-                    });
-        }
-    }
 
 
-    public void requestDataRefresh() {
-        mIsRequestDataRefresh = true;
-    }
+
 
 
     public void setRequestDataRefresh(boolean requestDataRefresh) {

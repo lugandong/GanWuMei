@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Dimon on 2016/3/26.
  */
-public class GanWuData extends BaseResult {
+public class GanWuData  {
     public Result results;
     public List<String> category;
     private boolean error;

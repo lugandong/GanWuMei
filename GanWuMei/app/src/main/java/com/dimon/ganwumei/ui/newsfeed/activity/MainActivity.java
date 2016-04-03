@@ -2,8 +2,10 @@ package com.dimon.ganwumei.ui.newsfeed.activity;
 
 
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -24,20 +28,19 @@ import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.components.GanWuComponent;
 import com.dimon.ganwumei.mvp.views.GanWuListView;
-import com.dimon.ganwumei.ui.base.SwipeRefreshBaseActivity;
+import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
+import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends SwipeRefreshBaseActivity implements HasComponent<GanWuComponent> ,GanWuListView{
+public class MainActivity extends BaseActivity implements HasComponent<GanWuComponent>, GanWuListView {
 
 
     @Bind(R.id.toolbar)
@@ -54,14 +57,19 @@ public class MainActivity extends SwipeRefreshBaseActivity implements HasCompone
     CoordinatorLayout rootLayout;
     @Bind(R.id.viewPager)
     ViewPager viewPager;
+    @Nullable
+    @Bind(R.id.swipe_refresh_layout)
+    public MultiSwipeRefreshLayout mSwipeRefreshLayout;
+    @Nullable
+    @Bind(R.id.app_bar_layout)
+    AppBarLayout mAppBar;
+    private boolean mIsRequestDataRefresh = false;
     private GanWuComponent ganWuComponent;
 
 
     ActionBarDrawerToggle drawerToggle;
 
 
-
-    @Inject
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +88,33 @@ public class MainActivity extends SwipeRefreshBaseActivity implements HasCompone
     private void initializeToolbar() {
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("GanWuMei");
+
+        if (mToolbar == null || mAppBar == null) {
+            throw new IllegalStateException("No toolbar");
+        }
+
+        mToolbar.setOnClickListener(v -> onToolbarClick());
+
+        setSupportActionBar(mToolbar);
+
+        if (canBack()) {
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            mAppBar.setElevation(10.6f);
+        }
     }
+
+    private void onToolbarClick() {
+
+    }
+
+    public boolean canBack() {
+        return false;
+    }
+
 
     private void initializeTab() {
         mTab.addTab(mTab.newTab().setText("All"));
@@ -92,17 +126,17 @@ public class MainActivity extends SwipeRefreshBaseActivity implements HasCompone
         tabList.add("iOS");
         List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < tabList.size(); i++) {
-            if (i == 0){
+            if (i == 0) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
-            }else if (i == 1){
+            } else if (i == 1) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
-            }else {
+            } else {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
                 fragment.setArguments(bundle);
@@ -150,10 +184,6 @@ public class MainActivity extends SwipeRefreshBaseActivity implements HasCompone
 
     }
 
-    @Override
-    protected int provideContentViewId() {
-        return 0;
-    }
 
     @Override
     public GanWuComponent getComponent() {
@@ -164,7 +194,28 @@ public class MainActivity extends SwipeRefreshBaseActivity implements HasCompone
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+        trySetupSwipeRefresh();
     }
+
+    void trySetupSwipeRefresh() {
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_3,
+                    R.color.refresh_progress_2, R.color.refresh_progress_1);
+            // do not use lambda!!
+            mSwipeRefreshLayout.setOnRefreshListener(
+                    new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            requestDataRefresh();
+                        }
+                    });
+        }
+    }
+
+    public void requestDataRefresh() {
+        mIsRequestDataRefresh = true;
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

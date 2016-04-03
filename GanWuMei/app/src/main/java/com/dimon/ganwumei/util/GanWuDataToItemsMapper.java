@@ -34,7 +34,7 @@ public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
     @Override
     public List<Item> call(GanWuData ganWuData) {
         KLog.a("到这里2");
-        if (!ganWuData.isError()) {
+        if (ganWuData.isError()) {
             throw new ApiException(100);
         }
         List<News> ganwus = ganWuData.results.androidList;
