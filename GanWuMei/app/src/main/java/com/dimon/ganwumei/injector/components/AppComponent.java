@@ -15,12 +15,7 @@ import dagger.Component;
  * Created by Dimon on 2016/3/18.
  */
 @Singleton
-@Component(
-        modules = {
-                AppModule.class,
-                ApiModule.class
-        }
-)
+@Component(modules = {AppModule.class, ApiModule.class})
 
 public interface AppComponent {
     void inject(BaseActivity baseActivity);

@@ -2,12 +2,15 @@ package com.dimon.ganwumei.network;
 
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.socks.library.KLog;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,39 +34,39 @@ public class HttpMethods {
     protected Subscription subscription;
 
     //构造方法私有
-    private HttpMethods(){
-        //手动创建一个OKHttpClient并设置超时时间
-
-        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        KLog.a(httpClientBuilder);
+    public HttpMethods(){
+//        //手动创建一个OKHttpClient并设置超时时间
+//
+//        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+//        httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+//        KLog.a(httpClientBuilder);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(httpClientBuilder.build())
+                .client(okHttpClient())
                 .build();
         restAPI = retrofit.create(RestAPI.class);
     }
 
-//    final Gson gson = new GsonBuilder()
-//            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-//            .serializeNulls()
-//            .create();
-//
-//    private OkHttpClient okHttpClient(){
-//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        // config log
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        return new OkHttpClient.Builder()
-//                .retryOnConnectionFailure(true) //设置出现错误进行重新连接。
-//                .connectTimeout(15, TimeUnit.SECONDS)
-//                .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
-//                .addInterceptor(logging)   //拦截器
-//                .build();
-//
-//    }
+    final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .serializeNulls()
+            .create();
+
+    private OkHttpClient okHttpClient(){
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // config log
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return new OkHttpClient.Builder()
+                .retryOnConnectionFailure(true) //设置出现错误进行重新连接。
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
+                .addInterceptor(logging)   //拦截器
+                .build();
+
+    }
 
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{

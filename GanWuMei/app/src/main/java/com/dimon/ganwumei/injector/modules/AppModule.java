@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.injector.modules;
 
-import com.dimon.ganwumei.MyApplication;
+import android.app.Application;
+
 import com.dimon.ganwumei.api.thread.ThreadPoolManager;
 
 import javax.inject.Singleton;
@@ -14,16 +15,16 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private final MyApplication myApplication;
+    private Application mApplication;
 
-    public AppModule(MyApplication myApplication){
-        this.myApplication =myApplication;
+    public AppModule(Application mApplication){
+        this.mApplication =mApplication;
     }
 
     @Provides
     @Singleton
-    MyApplication provideApplicationContext() {
-        return myApplication;
+    Application provideApplicationContext() {
+        return mApplication;
     }
 
 
