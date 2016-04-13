@@ -41,11 +41,11 @@ public class ObservableGanWuDb {
 
         do {
             // 添加数据
-            items.add(new Item(
-                    c.getString(GanWuDbHelper.GAN_WU_ID_COLUMN_POSITION),
-                    c.getString(GanWuDbHelper.GAN_WU_URL_COLUMN_POSITION),
-                    c.getString(GanWuDbHelper.GAN_WU_DESCRIPTION_COLUMN_POSITION),
-                    new Item.Owner(c.getString(GanWuDbHelper.GAN_WU_OWNER_COLUMN_POSITION), "", "", "")));
+//            items.add(new Item(
+//                    c.getString(GanWuDbHelper.GAN_WU_ID_COLUMN_POSITION),
+//                    c.getString(GanWuDbHelper.GAN_WU_URL_COLUMN_POSITION),
+//                    c.getString(GanWuDbHelper.GAN_WU_DESCRIPTION_COLUMN_POSITION),
+//                    new Item.Owner(c.getString(GanWuDbHelper.GAN_WU_OWNER_COLUMN_POSITION), "", "", "")));
         } while (c.moveToNext());
         c.close();
         mDbHelper.close();

@@ -42,7 +42,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements HasComponent<GanWuComponent>, GanWuListView {
 
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.tabLayout)
