@@ -5,11 +5,9 @@ import android.content.Context;
 
 import com.dimon.ganwumei.injector.components.AppComponent;
 import com.dimon.ganwumei.injector.components.DaggerAppComponent;
+import com.dimon.ganwumei.injector.modules.ApiModule;
 import com.dimon.ganwumei.injector.modules.AppModule;
 import com.socks.library.KLog;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 
 /**
@@ -35,10 +33,7 @@ public class MyApplication extends Application {
         version="v1.0.0";
         KLog.init(DEBUG);
         initializeInjector();
-        Realm.setDefaultConfiguration(new RealmConfiguration.Builder(this)
-                .schemaVersion(2)
-                .deleteRealmIfMigrationNeeded()
-                .build());
+
     }
 
     public AppComponent getAppComponent() {
@@ -48,6 +43,7 @@ public class MyApplication extends Application {
     private void initializeInjector() {
         this.appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
+                .apiModule(new ApiModule(this))
                 .build();
     }
 

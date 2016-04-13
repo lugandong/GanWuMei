@@ -3,7 +3,7 @@ package com.dimon.ganwumei.database.entities;
 /**
  * Created by Dimon on 2016/3/23.
  */
-public class News extends Soul {
+public class News  {
 
     /**
      * "createdAt": "2016-03-25T10:45:39.651Z",

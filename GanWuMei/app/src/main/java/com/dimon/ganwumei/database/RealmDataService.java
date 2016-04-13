@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.database;
 
-import com.dimon.ganwumei.MyApplication;
+import android.app.Application;
+
 import com.dimon.ganwumei.database.entities.Images;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.database.entities.Types;
@@ -17,7 +18,7 @@ import rx.Observable;
 public class RealmDataService implements DataService {
 
     @Inject
-    MyApplication context;
+    Application application;
 
     @Override
     public Observable<List<News>> newsList() {
