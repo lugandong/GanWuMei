@@ -4,6 +4,7 @@ package com.dimon.ganwumei.ui.newsfeed.activity;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -23,18 +24,24 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dimon.ganwumei.R;
+import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.components.GanWuComponent;
 import com.dimon.ganwumei.mvp.views.GanWuListView;
+import com.dimon.ganwumei.network.HttpMethods;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
+import com.dimon.ganwumei.widget.subscribers.SubscriberOnNextListener;
+import com.dimon.ganwumei.widget.subscribers.SwipeRefreshSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,7 +72,8 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     private boolean mIsRequestDataRefresh = false;
     private GanWuComponent ganWuComponent;
 
-
+    @Inject
+    HttpMethods mHttpMethods;
     ActionBarDrawerToggle drawerToggle;
 
 
@@ -192,8 +200,20 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
         trySetupSwipeRefresh();
+        drawerToggle.syncState();
+        new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
+        loadData(true);
+    }
+
+    private void loadData(boolean clean) {
+        mHttpMethods.getGanWu(new SwipeRefreshSubscriber<>(new SubscriberOnNextListener<List<Item>>() {
+            @Override
+            public void onNext(List<Item> items) {
+
+            }
+        },this));
+
     }
 
     void trySetupSwipeRefresh() {
@@ -215,6 +235,25 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
         mIsRequestDataRefresh = true;
     }
 
+    public void setRequestDataRefresh(boolean requestDataRefresh) {
+        if (mSwipeRefreshLayout == null) {
+            return;
+        }
+        if (!requestDataRefresh) {
+            mIsRequestDataRefresh = false;
+            // 防止刷新消失太快，让子弹飞一会儿.
+            mSwipeRefreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mSwipeRefreshLayout != null) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+            }, 1000);
+        } else {
+            mSwipeRefreshLayout.setRefreshing(true);
+        }
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

@@ -21,6 +21,8 @@ import com.socks.library.KLog;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by Dimon on 2016/3/23.
  */
@@ -31,6 +33,7 @@ public class GanWuFragment extends Fragment  {
     private LinearLayoutManager linearLayoutManager;
     private GanWuAdapter mAdapter;
 
+    @Inject HttpMethods mHttpMethods;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,26 +44,17 @@ public class GanWuFragment extends Fragment  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
+        KLog.a("onNext里面");
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        KLog.a(mRecyclerView);
+        linearLayoutManager = new LinearLayoutManager(context());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(subjects, context()));
     }
 
-    private void initData() {
-        HttpMethods.getInstance().getGanWu(
-                new ProgressSubscriber(new SubscriberOnNextListener<List<Item>>() {
-                    @Override
-                    public void onNext(List<Item> subjects) {
-                        KLog.a("onNext里面");
-                        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-                        KLog.a(mRecyclerView);
-                        linearLayoutManager = new LinearLayoutManager(context());
-                        mRecyclerView.setLayoutManager(linearLayoutManager);
-                        mRecyclerView.setHasFixedSize(true);
-                        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(subjects, context()));
-                    }
-                }, context()));
 
-    }
 
     public Context context() {
         return this.getActivity();

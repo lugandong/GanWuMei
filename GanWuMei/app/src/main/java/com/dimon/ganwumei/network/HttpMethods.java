@@ -68,15 +68,18 @@ public class HttpMethods {
 
     }
 
-    //在访问HttpMethods时创建单例
-    private static class SingletonHolder{
-        private static final HttpMethods INSTANCE = new HttpMethods();
-    }
-
-    //获取单例
-    public static HttpMethods getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
+    /**
+     * 被Dagger代替
+     */
+//    //在访问HttpMethods时创建单例
+//    private static class SingletonHolder{
+//        private static final HttpMethods INSTANCE = new HttpMethods();
+//    }
+//
+//    //获取单例
+//    public static HttpMethods getInstance(){
+//        return SingletonHolder.INSTANCE;
+//    }
 
 
     /**
