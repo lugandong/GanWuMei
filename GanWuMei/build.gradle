@@ -6,7 +6,7 @@ buildscript {
         mavenCentral() // jcenter() works as well because it pulls from Maven Central
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-alpha5'
+        classpath 'com.android.tools.build:gradle:2.1.0-beta1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.0'//retrolambda
         classpath "io.realm:realm-gradle-plugin:0.88.0"//Realm是一个可以替代SQLite以及ORMlibraries的轻量级数据库。

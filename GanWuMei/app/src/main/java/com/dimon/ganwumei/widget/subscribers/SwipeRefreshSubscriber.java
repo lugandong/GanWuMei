@@ -12,9 +12,8 @@ public class SwipeRefreshSubscriber<T> extends Subscriber<T>  {
     private SubscriberOnNextListener mSubscriberOnNextListener;
     private Context context;
 
-    public SwipeRefreshSubscriber (SubscriberOnNextListener mSubscriberOnNextListener, Context context){
+    public SwipeRefreshSubscriber (SubscriberOnNextListener mSubscriberOnNextListener){
         this.mSubscriberOnNextListener = mSubscriberOnNextListener;
-        this.context = context;
     }
     @Override
     public void onCompleted() {

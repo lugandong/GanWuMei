@@ -71,15 +71,15 @@ public class HttpMethods {
     /**
      * 被Dagger代替
      */
-//    //在访问HttpMethods时创建单例
-//    private static class SingletonHolder{
-//        private static final HttpMethods INSTANCE = new HttpMethods();
-//    }
-//
-//    //获取单例
-//    public static HttpMethods getInstance(){
-//        return SingletonHolder.INSTANCE;
-//    }
+    //在访问HttpMethods时创建单例
+    private static class SingletonHolder{
+        private static final HttpMethods INSTANCE = new HttpMethods();
+    }
+
+    //获取单例
+    public static HttpMethods getInstance(){
+        return SingletonHolder.INSTANCE;
+    }
 
 
     /**
@@ -90,7 +90,7 @@ public class HttpMethods {
     public void getGanWu(Subscriber<List<Item>> subscriber){
         KLog.a(restAPI);
         unsubscribe();
-        Observable observable = restAPI.getGanWuData(2016,03,25)
+        Observable observable = restAPI.getGanWuData("2016","04","08")
                 .map(GanWuDataToItemsMapper.getInstance());
         toSubscribe(observable, subscriber);
     }

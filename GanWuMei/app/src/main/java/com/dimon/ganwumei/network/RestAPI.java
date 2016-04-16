@@ -37,8 +37,8 @@ public interface RestAPI {
 
     @GET("day/{year}/{month}/{day}")
     Observable<GanWuData> getGanWuData(
-            @Path("year") int year,
-            @Path("month") int month,
-            @Path("day") int day);
+            @Path("year") String year,
+            @Path("month") String month,
+            @Path("day") String day);
 
 }

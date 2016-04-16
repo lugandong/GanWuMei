@@ -4,7 +4,6 @@ package com.dimon.ganwumei.ui.newsfeed.activity;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,7 +14,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
@@ -34,9 +31,6 @@ import com.dimon.ganwumei.network.HttpMethods;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
-import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
-import com.dimon.ganwumei.widget.subscribers.SubscriberOnNextListener;
-import com.dimon.ganwumei.widget.subscribers.SwipeRefreshSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +58,9 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     @Bind(R.id.viewPager)
     ViewPager viewPager;
     @Nullable
-    @Bind(R.id.swipe_refresh_layout)
-    public MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    @Nullable
     @Bind(R.id.app_bar_layout)
     AppBarLayout mAppBar;
-    private boolean mIsRequestDataRefresh = false;
+
     private GanWuComponent ganWuComponent;
 
     @Inject
@@ -80,6 +71,7 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initUi();
         initializeToolbar();
         initializeTab();
@@ -200,60 +192,9 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        trySetupSwipeRefresh();
         drawerToggle.syncState();
-        new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
-        loadData(true);
     }
 
-    private void loadData(boolean clean) {
-        mHttpMethods.getGanWu(new SwipeRefreshSubscriber<>(new SubscriberOnNextListener<List<Item>>() {
-            @Override
-            public void onNext(List<Item> items) {
-
-            }
-        },this));
-
-    }
-
-    void trySetupSwipeRefresh() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_3,
-                    R.color.refresh_progress_2, R.color.refresh_progress_1);
-            // do not use lambda!!
-            mSwipeRefreshLayout.setOnRefreshListener(
-                    new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            requestDataRefresh();
-                        }
-                    });
-        }
-    }
-
-    public void requestDataRefresh() {
-        mIsRequestDataRefresh = true;
-    }
-
-    public void setRequestDataRefresh(boolean requestDataRefresh) {
-        if (mSwipeRefreshLayout == null) {
-            return;
-        }
-        if (!requestDataRefresh) {
-            mIsRequestDataRefresh = false;
-            // 防止刷新消失太快，让子弹飞一会儿.
-            mSwipeRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (mSwipeRefreshLayout != null) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-            }, 1000);
-        } else {
-            mSwipeRefreshLayout.setRefreshing(true);
-        }
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -284,6 +225,12 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     @Override
