@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.Item;
+import com.dimon.ganwumei.database.entities.Images;
 import com.dimon.ganwumei.util.ImageLoader;
 
 import java.util.List;
@@ -22,12 +22,12 @@ import java.util.List;
  */
 public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHolder>{
 
-    private List<Item> newses;
+    private List<Images> newses;
     private ImageLoader mImageLoader;
 
     private Context mContext;
 
-    public GanWuAdapter(List<Item> newses, Context context) {
+    public GanWuAdapter(List<Images> newses, Context context) {
         this.newses = newses;
         this.mContext=context;
         mImageLoader = ImageLoader.getInstance(3, ImageLoader.Type.LIFO);
@@ -64,11 +64,11 @@ public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHold
     @Override
     public void onBindViewHolder(NewsViewHolder personViewHolder, int i) {
         Glide.with(mContext)
-                .load(newses.get(i).getImageurl())
+                .load(newses.get(i).getUrl())
                 .placeholder(R.drawable.dog) //设置占位图
                 .crossFade() //设置淡入淡出效果，默认300ms，可以传参.crossFade() //设置淡入淡出效果，默认300ms，可以传参
                 .into(personViewHolder.news_photo);
-        personViewHolder.news_title.setText(newses.get(i).getDescription());
+        personViewHolder.news_title.setText(newses.get(i).getDesc());
         personViewHolder.news_desc.setText(newses.get(i).getWho());
 
     }

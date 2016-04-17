@@ -27,15 +27,12 @@ import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.components.GanWuComponent;
 import com.dimon.ganwumei.mvp.views.GanWuListView;
-import com.dimon.ganwumei.network.HttpMethods;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,9 +59,8 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     AppBarLayout mAppBar;
 
     private GanWuComponent ganWuComponent;
+    private static final String FRAGMENT_INDEX = "fragment_index";
 
-    @Inject
-    HttpMethods mHttpMethods;
     ActionBarDrawerToggle drawerToggle;
 
 
@@ -128,16 +124,19 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
             if (i == 0) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
+                bundle.putInt(FRAGMENT_INDEX,0);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else if (i == 1) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
+                bundle.putInt(FRAGMENT_INDEX,1);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
+                bundle.putInt(FRAGMENT_INDEX,2);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             }

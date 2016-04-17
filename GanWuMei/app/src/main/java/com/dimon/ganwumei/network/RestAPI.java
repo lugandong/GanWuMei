@@ -31,8 +31,8 @@ import rx.Observable;
  */
 public interface RestAPI {
 
-    @GET("data/福利/" + ImagesFactory.ImagesSize + "/{page}")
-    Observable<ImageData> getMeizhiData(
+    @GET("data/福利/"+ 10 +"/{page}")
+    Observable<ImageData> getImageData(
             @Path("page") int page);
 
     @GET("day/{year}/{month}/{day}")

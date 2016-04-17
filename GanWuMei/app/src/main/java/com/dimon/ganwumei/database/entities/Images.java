@@ -21,11 +21,13 @@ package com.dimon.ganwumei.database.entities;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+
 /**
  *
  * Created by Dimon on 2016/3/26.
  */
-public class Images extends Soul{
+public class Images extends RealmObject{
 
     /**
      *  "createdAt": "2016-03-24T12:35:23.841Z",

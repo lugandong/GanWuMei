@@ -9,8 +9,12 @@ import com.dimon.ganwumei.injector.modules.ApiModule;
 import com.dimon.ganwumei.injector.modules.AppModule;
 import com.socks.library.KLog;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 /**
+ *
  * Created by Dimon on 2016/3/2.
  */
 public class MyApplication extends Application {
@@ -33,7 +37,9 @@ public class MyApplication extends Application {
         version="v1.0.0";
         KLog.init(DEBUG);
         initializeInjector();
-
+        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
+        Realm.deleteRealm(config);
+        Realm.setDefaultConfiguration(config);
     }
 
     public AppComponent getAppComponent() {

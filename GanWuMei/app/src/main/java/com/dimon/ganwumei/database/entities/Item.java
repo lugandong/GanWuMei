@@ -1,9 +1,11 @@
 package com.dimon.ganwumei.database.entities;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Dimon on 2016/3/29.
  */
-public class Item {
+public class Item extends RealmObject{
     public String date;
     public String description;
     public String url;

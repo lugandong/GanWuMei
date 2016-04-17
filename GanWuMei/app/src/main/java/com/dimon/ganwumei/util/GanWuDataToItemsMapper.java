@@ -27,13 +27,12 @@ public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
     }
 
     public static GanWuDataToItemsMapper getInstance() {
-        KLog.a("到这里3");
         return INSTANCE;
     }
 
     @Override
     public List<Item> call(GanWuData ganWuData) {
-        KLog.a("到这里2");
+        KLog.a("inCall");
         if (ganWuData.isError()) {
             throw new ApiException(100);
         }
@@ -54,7 +53,6 @@ public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
             item.who = ganwu.getWho();
             item.description = ganwu.getDesc();
             items.add(item);
-            KLog.a(items);
         }
         return items;
     }

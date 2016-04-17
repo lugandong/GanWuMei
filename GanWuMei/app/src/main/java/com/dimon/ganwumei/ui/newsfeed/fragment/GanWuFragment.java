@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,40 +14,69 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.Item;
-import com.dimon.ganwumei.network.HttpMethods;
+import com.dimon.ganwumei.database.entities.Images;
+import com.dimon.ganwumei.network.RestAPI;
+import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.adapter.GanWuAdapter;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 import com.socks.library.KLog;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Subscriber;
+import io.realm.Realm;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Dimon on 2016/3/23.
  */
-public class GanWuFragment extends Fragment {
+public class GanWuFragment extends BaseFragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @Nullable
     @Bind(R.id.swipe_refresh_layout)
     public MultiSwipeRefreshLayout mSwipeRefreshLayout;
-//    @Inject
-//    HttpMethods mHttpMethods;
 
+    private Realm mRealm;
+    private static final String FRAGMENT_INDEX = "fragment_index";
+    private int mGanWuIndex = -1;
+    private int mPage = 1;
+    /**
+     * 标志位，标志已经初始化完成
+     */
+    private boolean isPrepared;
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    private boolean mHasLoadedOnce;
     private View view;
     private LinearLayoutManager linearLayoutManager;
+    protected Subscription subscription;
+    private static RestAPI restAPI;
     private GanWuAdapter mAdapter;
     private boolean mIsRequestDataRefresh = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+            //获取索引值
+            Bundle bundle = getArguments();
+            if (bundle != null) {
+                mGanWuIndex = bundle.getInt(FRAGMENT_INDEX);
+            }
+        }
         ButterKnife.bind(this, view);
+        mRealm = Realm.getDefaultInstance();
+        isPrepared = true;
+        lazyLoad();
+        //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null) {
+            parent.removeView(view);
+        }
         return view;
     }
 
@@ -61,27 +90,52 @@ public class GanWuFragment extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        loadData(true);
+
     }
+
     private void loadData(boolean clean) {
-        HttpMethods.getInstance().getGanWu(new Subscriber<List<Item>>() {
-            @Override
-            public void onCompleted() {
-                setRequestDataRefresh(false);
-            }
+//        HttpMethods.getInstance().getImage(new Subscriber<List<Images>>() {
+//            @Override
+//            public void onCompleted() {
+//                if (mSwipeRefreshLayout != null) {
+//                    mSwipeRefreshLayout.setRefreshing(false);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                assert mSwipeRefreshLayout != null;
+//                mSwipeRefreshLayout.setRefreshing(false);
+//                KLog.e(e);
+//            }
+//
+//            @Override
+//            public void onNext(List<Images> images) {
+//                mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(images, context()));
+//            }
+//        });
+        subscription = mRealm
+                .where(Images.class)
+                .findAllSortedAsync("desc")
+                .asObservable()
+                .filter(images -> images.isLoaded())
+                .flatMap(Observable::from)
+                .flatMap(images1 -> restAPI.getImageData(mPage))
+                .map(imageData -> imageData.results)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(images3 -> {
+                    if (clean) images3.clear();
+                    mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(images3, context()));
+                    setRequestDataRefresh(false);
+                }, throwable -> loadError(throwable));
+    }
 
-            @Override
-            public void onError(Throwable e) {
-                setRequestDataRefresh(false);
-                KLog.e(e);
-            }
-
-            @Override
-            public void onNext(List<Item> items) {
-                mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(items, context()));
-            }
-        });
-
+    private void loadError(Throwable throwable) {
+        throwable.printStackTrace();
+        Snackbar.make(mRecyclerView, R.string.snap_load_fail,
+                Snackbar.LENGTH_LONG).setAction(R.string.retry, v -> {
+            requestDataRefresh();
+        }).show();
     }
 
     void trySetupSwipeRefresh() {
@@ -101,6 +155,8 @@ public class GanWuFragment extends Fragment {
 
     public void requestDataRefresh() {
         mIsRequestDataRefresh = true;
+        mPage = 1;
+        loadData(true);
     }
 
     public void setRequestDataRefresh(boolean requestDataRefresh) {
@@ -131,6 +187,7 @@ public class GanWuFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mRealm.close();
     }
 
     @Override
@@ -140,4 +197,12 @@ public class GanWuFragment extends Fragment {
     }
 
 
+    @Override
+    protected void lazyLoad() {
+        if (!isPrepared || !isVisible || mHasLoadedOnce) {
+            return;
+        }
+        loadData(true);
+        mHasLoadedOnce = true;
+    }
 }

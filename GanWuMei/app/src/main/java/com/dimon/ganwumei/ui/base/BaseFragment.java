@@ -10,13 +10,12 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.dimon.ganwumei.injector.HasComponent;
-import com.dimon.ganwumei.network.ImagesFactory;
-import com.dimon.ganwumei.network.RestAPI;
 
 
 public abstract  class BaseFragment extends Fragment {
+    protected boolean isVisible;
 
-    public static final RestAPI sGanWuIO = ImagesFactory.getGanWuIOSingleton();
+    protected boolean isFirst = true;
     /**
      * show Toast Message
      * @param message
@@ -31,4 +30,32 @@ public abstract  class BaseFragment extends Fragment {
     protected <C> C getComponent(Class<C> componentType) {
         return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
+
+    /**
+     * 在这里实现Fragment数据的缓加载.
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    protected void onVisible(){
+        if(isFirst){
+            lazyLoad();
+            isFirst=false;
+        }
+
+    }
+
+    protected abstract void lazyLoad();
+
+    protected void onInvisible(){}
 }

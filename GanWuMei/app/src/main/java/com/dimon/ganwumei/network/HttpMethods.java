@@ -1,5 +1,6 @@
 package com.dimon.ganwumei.network;
 
+import com.dimon.ganwumei.database.entities.Images;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
 import com.google.gson.Gson;
@@ -9,6 +10,7 @@ import com.socks.library.KLog;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -28,19 +30,15 @@ public class HttpMethods {
 
     private static final int DEFAULT_TIMEOUT = 5;
 
+    private Realm mRealm;
     private static RestAPI restAPI;
     private Retrofit retrofit;
 
     protected Subscription subscription;
 
     //构造方法私有
-    public HttpMethods(){
-//        //手动创建一个OKHttpClient并设置超时时间
-//
-//        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-//        httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-//        KLog.a(httpClientBuilder);
 
+    public HttpMethods(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -93,6 +91,24 @@ public class HttpMethods {
         Observable observable = restAPI.getGanWuData("2016","04","08")
                 .map(GanWuDataToItemsMapper.getInstance());
         toSubscribe(observable, subscriber);
+    }
+
+    public void getImage(Subscriber<List<Images>> subscriber){
+        unsubscribe();
+//        Observable observable = restAPI.getImageData(1)
+//                .map(imageData -> imageData.results);
+        subscription = mRealm
+                .where(Images.class)
+                .findAllSortedAsync("desc")
+                .asObservable()
+                .filter(images -> images.isLoaded())
+                .flatMap(images1 -> Observable.from(images1))
+                .flatMap(images2 -> restAPI.getImageData(1))
+                .map(imageData -> imageData.results)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
     }
     protected void unsubscribe() {
         if (subscription != null && !subscription.isUnsubscribed()) {

@@ -8,4 +8,8 @@ import com.dimon.ganwumei.ui.base.BaseFragment;
 public class AndroidFragment extends BaseFragment {
 
 
+    @Override
+    protected void lazyLoad() {
+
+    }
 }

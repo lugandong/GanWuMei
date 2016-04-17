@@ -22,7 +22,6 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor' // butterknife
     }
-
     // 注释冲突
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -33,6 +32,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+//设置编码
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
 
 dependencies {
