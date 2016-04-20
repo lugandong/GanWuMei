@@ -1,20 +1,26 @@
 package com.dimon.ganwumei.database.entities;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Dimon on 2016/3/29.
  */
-public class Item {
+public class Item extends RealmObject{
     public String date;
     public String description;
     public String url;
     public String who;
+    public String imageurl;
+
 
     @Override
     public String toString() {
         return "Item{" +
-                "description='" + description + '\'' +
+                "date='" + date + '\'' +
+                ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
                 ", who='" + who + '\'' +
+                ", imageurl='" + imageurl + '\'' +
                 '}';
     }
 
@@ -48,5 +54,13 @@ public class Item {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }

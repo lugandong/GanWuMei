@@ -63,7 +63,7 @@ public class AppStart extends BaseActivity {
     }
 
     private void startAnima() {
-        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.7f, 1.0f, 1.7f, Animation.RELATIVE_TO_SELF, 0.5f,
+        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.5f, 1.0f, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new OvershootInterpolator());
         animation.setDuration(8500);

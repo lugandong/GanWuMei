@@ -22,7 +22,6 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor' // butterknife
     }
-
     // 注释冲突
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -33,6 +32,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+}
+
+//设置编码
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
 
 dependencies {
@@ -77,4 +84,6 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'//添加android缺失的部分javax注解
 
     compile 'com.github.zhaokaiqiang.klog:library:1.3.0'//日志输出
+
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

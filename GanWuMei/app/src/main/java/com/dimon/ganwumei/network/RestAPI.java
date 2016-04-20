@@ -31,14 +31,14 @@ import rx.Observable;
  */
 public interface RestAPI {
 
-    @GET("data/福利/" + ImagesFactory.ImagesSize + "/{page}")
-    Observable<ImageData> getMeizhiData(
+    @GET("data/福利/"+ 10 +"/{page}")
+    Observable<ImageData> getImageData(
             @Path("page") int page);
 
     @GET("day/{year}/{month}/{day}")
     Observable<GanWuData> getGanWuData(
-            @Path("year") int year,
-            @Path("month") int month,
-            @Path("day") int day);
+            @Path("year") String year,
+            @Path("month") String month,
+            @Path("day") String day);
 
 }

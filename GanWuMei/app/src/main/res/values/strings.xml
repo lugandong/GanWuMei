@@ -47,4 +47,6 @@
     <string name="news_four_title">Sweden royal wedding</string>
     <string name="news_four_desc">嘿~如果觉得这篇文章对您有帮助，希望你能点个赞，你可以通过订阅微信公众号：ITBird，或新浪微博：明桑Anroid 找到我，记得关注博客哦</string>
     <string name="hello_world">Hello world!</string>
+    <string name="snap_load_fail">加载失败，请重试</string>
+    <string name="retry">重试</string>
 </resources>

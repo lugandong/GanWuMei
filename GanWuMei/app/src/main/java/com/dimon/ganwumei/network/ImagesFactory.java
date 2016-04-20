@@ -18,14 +18,12 @@
  */
 package com.dimon.ganwumei.network;
 
-import javax.inject.Inject;
-
 /**
  * Created by Dimon on 2016/3/26.
  */
 public class ImagesFactory {
-    @Inject
-    static RestAPI restAPI;
+
+    public static RestAPI restAPI;
 
     protected static final Object monitor = new Object();
     static RestAPI sGanWuIOSingleton = null;

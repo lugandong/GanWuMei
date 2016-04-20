@@ -18,7 +18,7 @@
  */
 package com.dimon.ganwumei.database;
 
-import com.dimon.ganwumei.database.entities.Images;
+import com.dimon.ganwumei.database.entities.Image;
 
 import java.util.List;
 
@@ -26,5 +26,5 @@ import java.util.List;
  * Created by Dimon on 2016/3/26.
  */
 public class ImageData extends BaseResult{
-    public List<Images> results;
+    public List<Image> results;
 }

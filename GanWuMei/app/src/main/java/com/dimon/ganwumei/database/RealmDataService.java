@@ -2,7 +2,7 @@ package com.dimon.ganwumei.database;
 
 import android.app.Application;
 
-import com.dimon.ganwumei.database.entities.Images;
+import com.dimon.ganwumei.database.entities.Image;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.database.entities.Types;
 
@@ -31,17 +31,17 @@ public class RealmDataService implements DataService {
     }
 
     @Override
-    public Observable<Images> findImages(String url) {
+    public Observable<Image> findImages(String url) {
         return null;
     }
 
     @Override
-    public Observable<List<News>> newsListByImages(Images images) {
+    public Observable<List<News>> newsListByImages(Image image) {
         return null;
     }
 
     @Override
-    public Observable<News> newNews(String type, String desc, String url, Images images, List<Types> types) {
+    public Observable<News> newNews(String type, String desc, String url, Image image, List<Types> types) {
         return null;
     }
 

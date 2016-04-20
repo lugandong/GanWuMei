@@ -10,13 +10,9 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.dimon.ganwumei.injector.HasComponent;
-import com.dimon.ganwumei.network.ImagesFactory;
-import com.dimon.ganwumei.network.RestAPI;
 
 
 public abstract  class BaseFragment extends Fragment {
-
-    public static final RestAPI sGanWuIO = ImagesFactory.getGanWuIOSingleton();
     /**
      * show Toast Message
      * @param message
@@ -31,4 +27,5 @@ public abstract  class BaseFragment extends Fragment {
     protected <C> C getComponent(Class<C> componentType) {
         return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
+
 }

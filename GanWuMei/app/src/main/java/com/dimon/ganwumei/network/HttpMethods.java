@@ -1,7 +1,11 @@
 package com.dimon.ganwumei.network;
 
+import com.dimon.ganwumei.database.entities.Image;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
+import com.dimon.ganwumei.util.ImageToMeizhiMapper;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.socks.library.KLog;
@@ -9,6 +13,8 @@ import com.socks.library.KLog;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
+import io.realm.RealmObject;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -28,31 +34,36 @@ public class HttpMethods {
 
     private static final int DEFAULT_TIMEOUT = 5;
 
+    private Realm mRealm;
     private static RestAPI restAPI;
     private Retrofit retrofit;
 
     protected Subscription subscription;
 
     //构造方法私有
-    public HttpMethods(){
-//        //手动创建一个OKHttpClient并设置超时时间
-//
-//        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-//        httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-//        KLog.a(httpClientBuilder);
 
+    public HttpMethods(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient())
                 .build();
         restAPI = retrofit.create(RestAPI.class);
     }
 
-    final Gson gson = new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            .serializeNulls()
+    Gson gson = new GsonBuilder()
+            .setExclusionStrategies(new ExclusionStrategy() {
+                @Override
+                public boolean shouldSkipField(FieldAttributes f) {
+                    return f.getDeclaringClass().equals(RealmObject.class);
+                }
+
+                @Override
+                public boolean shouldSkipClass(Class<?> clazz) {
+                    return false;
+                }
+            })
             .create();
 
     private OkHttpClient okHttpClient(){
@@ -68,6 +79,12 @@ public class HttpMethods {
 
     }
 
+    public RestAPI getGankService() {
+        return restAPI;
+    }
+    /**
+     * 被Dagger代替
+     */
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
         private static final HttpMethods INSTANCE = new HttpMethods();
@@ -87,9 +104,16 @@ public class HttpMethods {
     public void getGanWu(Subscriber<List<Item>> subscriber){
         KLog.a(restAPI);
         unsubscribe();
-        Observable observable = restAPI.getGanWuData(2016,03,25)
+        Observable observable = restAPI.getGanWuData("2016","04","08")
                 .map(GanWuDataToItemsMapper.getInstance());
         toSubscribe(observable, subscriber);
+    }
+
+    public void getImage(Subscriber<List<Image>> subscriber){
+        unsubscribe();
+        Observable observable = restAPI.getImageData(1)
+                .map(ImageToMeizhiMapper.getInstance());
+        toSubscribe(observable,subscriber);
     }
     protected void unsubscribe() {
         if (subscription != null && !subscription.isUnsubscribed()) {
