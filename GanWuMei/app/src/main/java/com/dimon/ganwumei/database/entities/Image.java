@@ -27,7 +27,7 @@ import io.realm.RealmObject;
  *
  * Created by Dimon on 2016/3/26.
  */
-public class Images extends RealmObject{
+public class Image extends RealmObject{
 
     /**
      *  "createdAt": "2016-03-24T12:35:23.841Z",
@@ -47,9 +47,6 @@ public class Images extends RealmObject{
     public String desc;
     public Date createdAt;
     public Date publishedAt;
-    public Date updatedAt;
-    public int imageWidth;
-    public int imageHeight;
 
 
     public boolean isUsed() {
@@ -108,27 +105,4 @@ public class Images extends RealmObject{
         this.publishedAt = publishedAt;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
-    public void setImageWidth(int imageWidth) {
-        this.imageWidth = imageWidth;
-    }
-
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    public void setImageHeight(int imageHeight) {
-        this.imageHeight = imageHeight;
-    }
 }

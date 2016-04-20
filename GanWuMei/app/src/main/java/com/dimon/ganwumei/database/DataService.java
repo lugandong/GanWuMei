@@ -1,6 +1,6 @@
 package com.dimon.ganwumei.database;
 
-import com.dimon.ganwumei.database.entities.Images;
+import com.dimon.ganwumei.database.entities.Image;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.database.entities.Types;
 
@@ -14,9 +14,9 @@ import rx.Observable;
 public interface DataService {
     Observable<List<News>> newsList();
     Observable<News> news();
-    Observable<Images> findImages(String url);
-    Observable<List<News>> newsListByImages(Images images);
-    Observable<News> newNews(String type, String desc, String url, Images images, List<Types> types);
+    Observable<Image> findImages(String url);
+    Observable<List<News>> newsListByImages(Image image);
+    Observable<News> newNews(String type, String desc, String url, Image image, List<Types> types);
 
 
 }

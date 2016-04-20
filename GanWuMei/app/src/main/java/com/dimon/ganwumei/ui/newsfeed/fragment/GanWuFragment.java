@@ -14,19 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.Images;
+import com.dimon.ganwumei.database.entities.Image;
+import com.dimon.ganwumei.network.HttpMethods;
 import com.dimon.ganwumei.network.RestAPI;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.adapter.GanWuAdapter;
+import com.dimon.ganwumei.util.ImageToMeizhiMapper;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 import com.socks.library.KLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Dimon on 2016/3/23.
@@ -70,8 +72,6 @@ public class GanWuFragment extends BaseFragment {
         }
         ButterKnife.bind(this, view);
         mRealm = Realm.getDefaultInstance();
-        isPrepared = true;
-        lazyLoad();
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
@@ -90,38 +90,21 @@ public class GanWuFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
 
     private void loadData(boolean clean) {
-//        HttpMethods.getInstance().getImage(new Subscriber<List<Images>>() {
-//            @Override
-//            public void onCompleted() {
-//                if (mSwipeRefreshLayout != null) {
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                assert mSwipeRefreshLayout != null;
-//                mSwipeRefreshLayout.setRefreshing(false);
-//                KLog.e(e);
-//            }
-//
-//            @Override
-//            public void onNext(List<Images> images) {
-//                mRecyclerView.setAdapter(mAdapter = new GanWuAdapter(images, context()));
-//            }
-//        });
         subscription = mRealm
-                .where(Images.class)
-                .findAllSortedAsync("desc")
+                .where(Image.class)
+                .isNotNull("desc")
+                .findAllSortedAsync("publishedAt")
                 .asObservable()
-                .filter(images -> images.isLoaded())
-                .flatMap(Observable::from)
-                .flatMap(images1 -> restAPI.getImageData(mPage))
-                .map(imageData -> imageData.results)
+                .filter(image -> image.isLoaded())
+                .flatMap(image1 ->
+                        HttpMethods.getInstance().getGankService().getImageData(mPage)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread()))
+                .map(ImageToMeizhiMapper.getInstance())
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(images3 -> {
                     if (clean) images3.clear();
@@ -156,7 +139,8 @@ public class GanWuFragment extends BaseFragment {
     public void requestDataRefresh() {
         mIsRequestDataRefresh = true;
         mPage = 1;
-        loadData(true);
+        KLog.a("loadData");
+        loadData(false);
     }
 
     public void setRequestDataRefresh(boolean requestDataRefresh) {
@@ -176,12 +160,18 @@ public class GanWuFragment extends BaseFragment {
             }, 1000);
         } else {
             mSwipeRefreshLayout.setRefreshing(true);
+            loadData(false);
         }
     }
 
 
     public Context context() {
         return this.getActivity();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -197,12 +187,4 @@ public class GanWuFragment extends BaseFragment {
     }
 
 
-    @Override
-    protected void lazyLoad() {
-        if (!isPrepared || !isVisible || mHasLoadedOnce) {
-            return;
-        }
-        loadData(true);
-        mHasLoadedOnce = true;
-    }
 }

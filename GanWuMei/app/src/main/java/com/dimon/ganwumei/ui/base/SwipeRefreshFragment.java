@@ -58,8 +58,5 @@ public class SwipeRefreshFragment extends BaseFragment{
         mSwipeRefreshLayout.setCanChildScrollUpCallback(canChildScrollUpCallback);
     }
 
-    @Override
-    protected void lazyLoad() {
 
-    }
 }
