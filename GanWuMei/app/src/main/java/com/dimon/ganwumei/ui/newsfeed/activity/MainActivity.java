@@ -21,11 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.injector.HasComponent;
-import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
-import com.dimon.ganwumei.injector.components.GanWuComponent;
-import com.dimon.ganwumei.mvp.views.GanWuListView;
+import com.dimon.ganwumei.injector.components.ActivityComponent;
+import com.dimon.ganwumei.injector.components.DaggerActivityComponent;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
@@ -38,7 +36,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends BaseActivity implements HasComponent<GanWuComponent>, GanWuListView {
+public class MainActivity extends BaseActivity implements HasComponent<ActivityComponent> {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -56,7 +54,7 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     @Bind(R.id.app_bar_layout)
     AppBarLayout mAppBar;
 
-    private GanWuComponent ganWuComponent;
+    private ActivityComponent activityComponent;
     private static final String FRAGMENT_INDEX = "fragment_index";
 
     ActionBarDrawerToggle drawerToggle;
@@ -147,7 +145,7 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     }
 
     private void initializeInjector() {
-        this.ganWuComponent = DaggerGanWuComponent.builder()
+        this.activityComponent = DaggerActivityComponent.builder()
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -180,11 +178,6 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
 
     }
 
-
-    @Override
-    public GanWuComponent getComponent() {
-        return ganWuComponent;
-    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -231,87 +224,7 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     }
 
     @Override
-    public void bindGanWuList(List<News> newses) {
-
-    }
-
-    @Override
-    public void showGanWuList() {
-
-    }
-
-    @Override
-    public void hideGanWuList() {
-
-    }
-
-    @Override
-    public void showLoadingMoreGanWuIndicator() {
-
-    }
-
-    @Override
-    public void hideLoadingMoreGanWuIndicator() {
-
-    }
-
-    @Override
-    public void hideLoadingIndicator() {
-
-    }
-
-    @Override
-    public void showLoadingView() {
-
-    }
-
-    @Override
-    public void hideLoadingView() {
-
-    }
-
-    @Override
-    public void showLightError() {
-
-    }
-
-    @Override
-    public void hideErrorView() {
-
-    }
-
-    @Override
-    public void showEmptyIndicator() {
-
-    }
-
-    @Override
-    public void hideEmptyIndicator() {
-
-    }
-
-    @Override
-    public void updateGanWuList(int ganWuLimit) {
-
-    }
-
-    @Override
-    public void showConnectionErrorMessage() {
-
-    }
-
-    @Override
-    public void showServerErrorMessage() {
-
-    }
-
-    @Override
-    public void showUknownErrorMessage() {
-
-    }
-
-    @Override
-    public void showDetailScreen(String desc, String url) {
-
+    public ActivityComponent getComponent() {
+        return activityComponent;
     }
 }

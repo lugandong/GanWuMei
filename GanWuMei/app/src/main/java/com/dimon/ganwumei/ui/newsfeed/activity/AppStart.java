@@ -66,7 +66,7 @@ public class AppStart extends BaseActivity {
         ScaleAnimation animation = new ScaleAnimation(1.0f, 1.5f, 1.0f, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setInterpolator(new DecelerateInterpolator());
-        animation.setDuration(5000);
+        animation.setDuration(3000);
         animation.setFillAfter(true);
         ivSplash.startAnimation(animation);
     }

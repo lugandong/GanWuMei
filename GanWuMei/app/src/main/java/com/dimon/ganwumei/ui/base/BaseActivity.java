@@ -83,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("BaseActivity",getClass().getSimpleName());
-        this.getAppComponent().inject(this);
+        this.getActivityComponent().inject(this);
     }
 
     @Override protected void onDestroy() {

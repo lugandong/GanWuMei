@@ -1,10 +1,11 @@
 package com.dimon.ganwumei.injector.components;
 
-import com.dimon.ganwumei.api.thread.ThreadPoolManager;
+import android.content.Context;
+
+import com.dimon.ganwumei.database.DataManager;
 import com.dimon.ganwumei.injector.modules.ApiModule;
 import com.dimon.ganwumei.injector.modules.AppModule;
-import com.dimon.ganwumei.ui.base.BaseActivity;
-import com.dimon.ganwumei.util.FileUtils;
+import com.dimon.ganwumei.injector.qualifier.ContextType;
 
 import javax.inject.Singleton;
 
@@ -17,9 +18,9 @@ import dagger.Component;
 @Component(modules = {AppModule.class, ApiModule.class})
 
 public interface AppComponent {
-    void inject(BaseActivity baseActivity);
-    void inject(FileUtils fileUtils);
 
-    ThreadPoolManager threadPoolManager();
+    @ContextType("application")
+    Context context();
 
+    DataManager DATA_MANAGER();
 }

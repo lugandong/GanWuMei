@@ -18,6 +18,7 @@ import com.dimon.ganwumei.util.ImageLoader;
 import java.util.List;
 
 /**
+ *
  * Created by Dimon on 2016/4/20.
  */
 public class AndroidListAdapter extends RecyclerView.Adapter<AndroidListAdapter.NewsViewHolder>{

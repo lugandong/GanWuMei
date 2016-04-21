@@ -20,20 +20,22 @@ import io.realm.RealmConfiguration;
 public class MyApplication extends Application {
 
     public static Context AppContenxt;
+    private static MyApplication application;
     public static String version;
     //调试模式(打印日志)？
     private static boolean DEBUG = true;
 
     private AppComponent appComponent;
 
-    public static MyApplication get(Context context) {
-        return (MyApplication) context.getApplicationContext();
-    }
+//    public static MyApplication get(Context context) {
+//        return (MyApplication) context.getApplicationContext();
+//    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        AppContenxt=getApplicationContext();
+        AppContenxt = getApplicationContext();
+        application = this;
         version="v1.0.0";
         KLog.init(DEBUG);
         initializeInjector();
@@ -51,6 +53,10 @@ public class MyApplication extends Application {
                 .appModule(new AppModule(this))
                 .apiModule(new ApiModule(this))
                 .build();
+    }
+
+    public static MyApplication getApplication(){
+        return application;
     }
 
 }

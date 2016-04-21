@@ -2,7 +2,7 @@ package com.dimon.ganwumei.injector.modules;
 
 import android.content.Context;
 
-import com.dimon.ganwumei.injector.ActivityScope;
+import com.dimon.ganwumei.injector.scope.ActivityScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,7 +18,8 @@ public class ActivityModule {
         this.mContext = mContext;
     }
 
-    @Provides @ActivityScope
+    @Provides
+    @ActivityScope
     Context provideActivityContext() {
         return mContext;
     }

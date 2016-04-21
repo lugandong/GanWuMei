@@ -1,5 +1,6 @@
 package com.dimon.ganwumei.util;
 
+import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 
@@ -20,6 +21,20 @@ import java.util.List;
  * Created by Dimon on 2016/3/24.
  */
 public class FileUtils {
+
+    static Context mApplicationContext = MyApplication.getApplication();
+
+    public static File getDiskCacheDir(String uniqueName) {
+
+        String cachePath;
+        if(!"mounted".equals(Environment.getExternalStorageState()) && Environment.isExternalStorageRemovable()) {
+            cachePath = mApplicationContext.getCacheDir().getPath();
+        } else {
+            cachePath = mApplicationContext.getExternalCacheDir().getPath();
+        }
+
+        return new File(cachePath + File.separator + uniqueName);
+    }
     /**
      * SD卡是否存在
      */
@@ -307,6 +322,8 @@ public class FileUtils {
             }
         }
     }
+
+
 
     //------------------------------------------根据文件名删除文件-----------------------------------------------
     public static boolean delete(String filename, String path) {

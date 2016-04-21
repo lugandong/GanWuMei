@@ -49,4 +49,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="snap_load_fail">加载失败，请重试</string>
     <string name="retry">重试</string>
+    <string name="title_activity_picture">PictureActivity</string>
+    <string name="ask_saving_picture">保存至手机？</string>
 </resources>

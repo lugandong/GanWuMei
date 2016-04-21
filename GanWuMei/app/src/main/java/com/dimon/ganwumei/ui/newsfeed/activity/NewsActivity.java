@@ -29,7 +29,6 @@ public class NewsActivity extends AppCompatActivity {
         Intent intent=getIntent();
 
         Item item= (Item) intent.getSerializableExtra("News");
-//        DownloadImgUtils.downloadImgByUrl(item.getphotoUrl(), newsPhoto);
         //newsPhoto.setImageResource();
         newsTitle.setText(item.who);
         newsDesc.setText(item.description);

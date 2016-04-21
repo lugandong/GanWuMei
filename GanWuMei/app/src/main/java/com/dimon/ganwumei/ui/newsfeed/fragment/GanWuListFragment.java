@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dimon.ganwumei.R;
+import com.dimon.ganwumei.database.DataManager;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.database.entities.News;
-import com.dimon.ganwumei.network.HttpMethods;
-import com.dimon.ganwumei.network.RestAPI;
+import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
+import com.dimon.ganwumei.injector.modules.GanWuModule;
 import com.dimon.ganwumei.ui.base.BaseFragment;
+import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.AndroidListAdapter;
 import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
@@ -26,6 +28,8 @@ import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,7 +55,6 @@ public class GanWuListFragment extends BaseFragment {
     private int mPage = 1;
     private LinearLayoutManager linearLayoutManager;
     protected Subscription subscription;
-    private static RestAPI restAPI;
     private AndroidListAdapter mAndroidListAdapter;
     private boolean mIsRequestDataRefresh = false;
 
@@ -60,6 +63,24 @@ public class GanWuListFragment extends BaseFragment {
 
     // 是否已被加载过一次，第二次就不再去请求数据了
     private boolean mHasLoadedOnce;
+
+    @Inject
+    DataManager mDataManager;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initInject();
+    }
+
+    private void initInject() {
+        MainActivity activity = (MainActivity) getActivity();
+        DaggerGanWuComponent.builder()
+                .ganWuModule(new GanWuModule())
+                .activityComponent(activity.getComponent())
+                .build()
+                .inject(this);
+    }
 
     @Nullable
     @Override
@@ -106,7 +127,7 @@ public class GanWuListFragment extends BaseFragment {
                 .asObservable()
                 .filter(newses -> newses.isLoaded())
                 .flatMap(newses1 ->
-                        HttpMethods.getInstance().getGankService().getGanWuData("2016", "04", "20")
+                        mDataManager.getGanWuData("2016", "04", "20")
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread()))
                 .map(GanWuDataToItemsMapper.getInstance())
