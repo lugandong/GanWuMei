@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
@@ -65,14 +65,10 @@ public class AppStart extends BaseActivity {
     private void startAnima() {
         ScaleAnimation animation = new ScaleAnimation(1.0f, 1.5f, 1.0f, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setInterpolator(new OvershootInterpolator());
-        animation.setDuration(8500);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.setDuration(5000);
         animation.setFillAfter(true);
         ivSplash.startAnimation(animation);
-
-//        scaleAnimation = new ScaleAnimation(0.0f,1.4f,0.0f,1.4f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-//        scaleAnimation.setInterpolator(new OvershootInterpolator());
-//        ivSplash.startAnimation(scaleAnimation);
     }
 
     /** 初始化工作 */

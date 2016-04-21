@@ -59,4 +59,8 @@ public class SwipeRefreshFragment extends BaseFragment{
     }
 
 
+    @Override
+    protected void lazyLoad() {
+
+    }
 }

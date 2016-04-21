@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,6 +29,7 @@ import com.dimon.ganwumei.mvp.views.GanWuListView;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
+import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,6 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
     TabLayout mTab;
     @Bind(R.id.drawerLayout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.collapsingToolbarLayout)
-    CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.fabBtn)
     FloatingActionButton fabBtn;
     @Bind(R.id.rootLayout)
@@ -128,13 +126,13 @@ public class MainActivity extends BaseActivity implements HasComponent<GanWuComp
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else if (i == 1) {
-                Fragment fragment = new GanWuFragment();
+                Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt(FRAGMENT_INDEX,1);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else {
-                Fragment fragment = new GanWuFragment();
+                Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt(FRAGMENT_INDEX,2);
                 fragment.setArguments(bundle);
