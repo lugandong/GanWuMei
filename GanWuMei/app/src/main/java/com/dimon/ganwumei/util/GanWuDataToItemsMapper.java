@@ -17,7 +17,7 @@ import rx.functions.Func1;
 
 /**
  * 用来统一处理Http的resultCode,并将GanWuData的Data部分剥离出来返回给subscriber
- *
+ * <p>
  * Created by Dimon on 2016/3/29.
  */
 public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
@@ -37,11 +37,15 @@ public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
             throw new ApiException(100);
         }
         List<News> ganwus = ganWuData.results.androidList;
+        List<News> images = ganWuData.results.妹纸List;
         List<Item> items = new ArrayList<>(ganwus.size());
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
         SimpleDateFormat outputFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
         for (News ganwu : ganwus) {
             Item item = new Item();
+            for (News image : images){
+                item.setImageurl(image.getUrl());
+            }
             try {
                 Date date = inputFormat.parse(ganwu.getCreatedAt());
                 item.date = outputFormat.format(date);
@@ -49,11 +53,12 @@ public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {
                 e.printStackTrace();
                 item.date = "unknown date";
             }
-            item.url = ganwu.getUrl();
-            item.who = ganwu.getWho();
-            item.description = ganwu.getDesc();
+            item.setUrl(ganwu.getUrl());
+            item.setWho(ganwu.getWho());
+            item.setDescription(ganwu.getDesc());
             items.add(item);
         }
+
         return items;
     }
 }

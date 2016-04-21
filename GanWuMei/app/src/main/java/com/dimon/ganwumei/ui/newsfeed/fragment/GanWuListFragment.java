@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dimon.ganwumei.R;
-import com.dimon.ganwumei.database.entities.Image;
-import com.dimon.ganwumei.database.entities.Meizhi;
+import com.dimon.ganwumei.database.entities.Item;
+import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.network.HttpMethods;
 import com.dimon.ganwumei.network.RestAPI;
 import com.dimon.ganwumei.ui.base.BaseFragment;
-import com.dimon.ganwumei.ui.newsfeed.adapter.GanWuAdapter;
-import com.dimon.ganwumei.util.ImageToMeizhiMapper;
+import com.dimon.ganwumei.ui.newsfeed.adapter.AndroidListAdapter;
+import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 import com.socks.library.KLog;
 
@@ -35,37 +35,33 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- *
- * Created by Dimon on 2016/3/23.
+ * Created by Dimon on 2016/4/20.
  */
-public class GanWuFragment extends BaseFragment {
+public class GanWuListFragment extends BaseFragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    @Nullable
     @Bind(R.id.swipe_refresh_layout)
-    public MultiSwipeRefreshLayout mSwipeRefreshLayout;
-
+    MultiSwipeRefreshLayout mSwipeRefreshLayout;
     private Realm mRealm;
+    private View view;
+    private List<Item> mNewsList;
     private static final String FRAGMENT_INDEX = "fragment_index";
     private int mGanWuIndex = -1;
     private int mPage = 1;
-    private List<Meizhi> mMeizhisList;
-    /**
-     * 标志位，标志已经初始化完成
-     */
-    private boolean isPrepared;
-    /**
-     * 是否已被加载过一次，第二次就不再去请求数据了
-     */
-    private boolean mHasLoadedOnce;
-    private View view;
     private LinearLayoutManager linearLayoutManager;
     protected Subscription subscription;
     private static RestAPI restAPI;
-    private GanWuAdapter mGanWuAdapter;
+    private AndroidListAdapter mAndroidListAdapter;
     private boolean mIsRequestDataRefresh = false;
 
+    // 标志位，标志已经初始化完成
+    private boolean isPrepared;
+
+    // 是否已被加载过一次，第二次就不再去请求数据了
+    private boolean mHasLoadedOnce;
+
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
@@ -78,7 +74,8 @@ public class GanWuFragment extends BaseFragment {
         }
         ButterKnife.bind(this, view);
         mRealm = Realm.getDefaultInstance();
-        mMeizhisList = new ArrayList<>();
+        mNewsList = new ArrayList<>();
+
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
@@ -98,30 +95,30 @@ public class GanWuFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
-        mRecyclerView.setAdapter(mGanWuAdapter);
+        mAndroidListAdapter = new AndroidListAdapter(mNewsList, context());
+        mRecyclerView.setAdapter(mAndroidListAdapter);
     }
 
     private void loadData(boolean clean) {
         subscription = mRealm
-                .where(Image.class)
-                .isNotNull("desc")
+                .where(News.class)
                 .findAllSortedAsync("publishedAt")
                 .asObservable()
-                .filter(image -> image.isLoaded())
-                .flatMap(image1 ->
-                        HttpMethods.getInstance().getGankService().getImageData(mPage)
+                .filter(newses -> newses.isLoaded())
+                .flatMap(newses1 ->
+                        HttpMethods.getInstance().getGankService().getGanWuData("2016", "04", "20")
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread()))
-                .map(ImageToMeizhiMapper.getInstance())
+                .map(GanWuDataToItemsMapper.getInstance())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(images3 -> {
-                    if (clean) mMeizhisList.clear();
-                    mMeizhisList.addAll(images3);
-                    mGanWuAdapter.notifyDataSetChanged();
+                .subscribe(newsess -> {
+                    if (clean) mNewsList.clear();
+                    mNewsList.addAll(newsess);
+                    mAndroidListAdapter.notifyDataSetChanged();
                     setRequestDataRefresh(false);
                 }, throwable -> loadError(throwable));
+        addSubscription(subscription);
     }
 
     private void loadError(Throwable throwable) {
@@ -172,15 +169,8 @@ public class GanWuFragment extends BaseFragment {
         }
     }
 
-
     public Context context() {
         return this.getActivity();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mRealm.close();
     }
 
     @Override
@@ -189,6 +179,11 @@ public class GanWuFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRealm.close();
+    }
 
     @Override
     protected void lazyLoad() {

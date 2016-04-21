@@ -9,6 +9,7 @@ import java.util.List;
 import rx.Observable;
 
 /**
+ *
  * Created by Dimon on 2016/3/27.
  */
 public interface DataService {
@@ -17,6 +18,4 @@ public interface DataService {
     Observable<Image> findImages(String url);
     Observable<List<News>> newsListByImages(Image image);
     Observable<News> newNews(String type, String desc, String url, Image image, List<Types> types);
-
-
 }

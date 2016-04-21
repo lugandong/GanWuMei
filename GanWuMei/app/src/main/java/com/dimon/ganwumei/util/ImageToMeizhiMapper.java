@@ -11,6 +11,7 @@ import java.util.List;
 import rx.functions.Func1;
 
 /**
+ *
  * Created by Dimon on 2016/4/20.
  */
 public class ImageToMeizhiMapper implements Func1<ImageData,List<Meizhi>> {
