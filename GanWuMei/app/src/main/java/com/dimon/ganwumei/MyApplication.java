@@ -27,10 +27,6 @@ public class MyApplication extends Application {
 
     private AppComponent appComponent;
 
-//    public static MyApplication get(Context context) {
-//        return (MyApplication) context.getApplicationContext();
-//    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,6 +38,10 @@ public class MyApplication extends Application {
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         Realm.deleteRealm(config);
         Realm.setDefaultConfiguration(config);
+    }
+
+    public static Context getAppContenxt() {
+        return  AppContenxt;
     }
 
     public AppComponent getAppComponent() {

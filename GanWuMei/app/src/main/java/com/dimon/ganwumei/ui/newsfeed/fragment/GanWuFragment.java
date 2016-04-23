@@ -58,7 +58,8 @@ public class GanWuFragment extends BaseFragment {
     @Nullable
     @Bind(R.id.swipe_refresh_layout)
     public MultiSwipeRefreshLayout mSwipeRefreshLayout;
-
+    private boolean mIsFirstTimeTouchBottom = true;
+    private static final int PRELOAD_SIZE = 10;
     private Realm mRealm;
     private static final String FRAGMENT_INDEX = "fragment_index";
     private int mGanWuIndex = -1;
@@ -134,7 +135,10 @@ public class GanWuFragment extends BaseFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
         mRecyclerView.setAdapter(mGanWuAdapter);
+
+        mRecyclerView.addOnScrollListener(getOnBottomListener(linearLayoutManager));
         mGanWuAdapter.setOnMeizhiTouchListener(getOnMeizhiTouchListener());
+
     }
 
     private void loadData(boolean clean) {
@@ -253,6 +257,27 @@ public class GanWuFragment extends BaseFragment {
             startActivity(intent);
         }
     }
+
+    RecyclerView.OnScrollListener getOnBottomListener(LinearLayoutManager layoutManager) {
+        return new RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(RecyclerView rv, int dx, int dy) {
+                boolean isBottom =
+                        layoutManager.findLastCompletelyVisibleItemPosition() >=
+                                mGanWuAdapter.getItemCount() - PRELOAD_SIZE;
+                if (!mSwipeRefreshLayout.isRefreshing() && isBottom) {
+                    if (!mIsFirstTimeTouchBottom) {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        mPage += 1;
+                        loadData(false);
+                    }
+                    else {
+                        mIsFirstTimeTouchBottom = false;
+                    }
+                }
+            }
+        };
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

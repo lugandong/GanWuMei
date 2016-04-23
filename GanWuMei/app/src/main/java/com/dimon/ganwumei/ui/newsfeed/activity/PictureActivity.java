@@ -75,8 +75,7 @@ public class PictureActivity extends BaseActivity {
     }
     private void setupPhotoAttacher() {
         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
-//        mPhotoViewAttacher.setOnViewTapListener((view, v, v1) -> hideOrShowToolbar());
-        // @formatter:off
+        mPhotoViewAttacher.setOnViewTapListener((view, v, v1) -> onBackPressed());
         mPhotoViewAttacher.setOnLongClickListener(v -> {
             new AlertDialog.Builder(PictureActivity.this)
                     .setMessage(getString(R.string.ask_saving_picture))
@@ -88,7 +87,6 @@ public class PictureActivity extends BaseActivity {
                                 dialog.dismiss();
                             })
                     .show();
-            // @formatter:on
             return true;
         });
     }
