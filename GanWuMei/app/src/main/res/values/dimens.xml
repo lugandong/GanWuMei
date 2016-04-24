@@ -12,7 +12,7 @@
     <dimen name="fab_margin_bottom">0.1dp</dimen>
 
 
-    <dimen name="expanded_toolbar_title_margin_start">64dp</dimen>
+    <dimen name="expanded_toolbar_title_margin_start">16dp</dimen>
 
     <dimen name="nav_drawer_width">260dp</dimen>
 </resources>

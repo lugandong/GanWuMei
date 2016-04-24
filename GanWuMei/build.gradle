@@ -6,17 +6,18 @@ buildscript {
         mavenCentral() // jcenter() works as well because it pulls from Maven Central
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0-alpha3'
+        classpath 'com.android.tools.build:gradle:2.1.0-rc1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.0'//retrolambda
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'//retrolambda
+        classpath "io.realm:realm-gradle-plugin:0.88.0"//Realm是一个可以替代SQLite以及ORMlibraries的轻量级数据库。
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
-
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
