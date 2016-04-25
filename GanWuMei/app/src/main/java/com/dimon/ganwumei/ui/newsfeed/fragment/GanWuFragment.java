@@ -24,6 +24,7 @@ import com.dimon.ganwumei.database.entities.Meizhi;
 import com.dimon.ganwumei.func.OnMeizhiTouchListener;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.modules.GanWuModule;
+import com.dimon.ganwumei.mvp.contract.GanWuContract;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 import com.dimon.ganwumei.ui.newsfeed.activity.PictureActivity;
@@ -51,7 +52,7 @@ import rx.schedulers.Schedulers;
  *
  * Created by Dimon on 2016/3/23.
  */
-public class GanWuFragment extends BaseFragment {
+public class GanWuFragment extends BaseFragment implements GanWuContract.View{
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -297,5 +298,90 @@ public class GanWuFragment extends BaseFragment {
             return;
         }
         loadData(false);
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showMeizhis(List<Meizhi> meizhis) {
+
+    }
+
+    @Override
+    public void showMeizhiDetailsUi(String taskId) {
+
+    }
+
+    @Override
+    public void showMeizhiMarkedComplete() {
+
+    }
+
+    @Override
+    public void showMeizhiMarkedActive() {
+
+    }
+
+    @Override
+    public void showCompletedMeizhisCleared() {
+
+    }
+
+    @Override
+    public void showLoadingMeizhisError() {
+
+    }
+
+    @Override
+    public void showNoMeizhis() {
+
+    }
+
+    @Override
+    public void showActiveFilterLabel() {
+
+    }
+
+    @Override
+    public void showCompletedFilterLabel() {
+
+    }
+
+    @Override
+    public void showAllFilterLabel() {
+
+    }
+
+    @Override
+    public void showNoActiveMeizhis() {
+
+    }
+
+    @Override
+    public void showNoCompletedMeizhis() {
+
+    }
+
+    @Override
+    public void showSuccessfullySavedMessage() {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
+    @Override
+    public void showFilteringPopUpMenu() {
+
+    }
+
+    @Override
+    public void setPresenter(GanWuContract.Presenter presenter) {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.dimon.ganwumei.ui.newsfeed.activity;
+package com.dimon.ganwumei.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.api.FileStore;
 import com.dimon.ganwumei.api.thread.ThreadPoolManager;
-import com.dimon.ganwumei.ui.UiHelper;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 
 import javax.inject.Inject;

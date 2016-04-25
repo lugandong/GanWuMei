@@ -35,7 +35,7 @@ import com.dimon.ganwumei.injector.components.DaggerActivityComponent;
 import com.dimon.ganwumei.injector.modules.ActivityModule;
 import com.dimon.ganwumei.network.ImagesFactory;
 import com.dimon.ganwumei.network.RestAPI;
-import com.dimon.ganwumei.ui.newsfeed.activity.AboutActivity;
+import com.dimon.ganwumei.ui.AboutActivity;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
