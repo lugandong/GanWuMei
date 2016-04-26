@@ -3,8 +3,6 @@ package com.dimon.ganwumei.mvp.contract;
 import android.support.annotation.NonNull;
 
 import com.dimon.ganwumei.database.entities.Meizhi;
-import com.dimon.ganwumei.mvp.BasePresenter;
-import com.dimon.ganwumei.mvp.BaseView;
 
 import java.util.List;
 
@@ -13,7 +11,8 @@ import java.util.List;
  */
 public interface GanWuContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View {
+
         void setLoadingIndicator(boolean active);
 
         void showMeizhis(List<Meizhi> meizhis);
@@ -28,29 +27,13 @@ public interface GanWuContract {
 
         void showLoadingMeizhisError();
 
-        void showNoMeizhis();
+        boolean isInactive();
 
-        void showActiveFilterLabel();
-
-        void showCompletedFilterLabel();
-
-        void showAllFilterLabel();
-
-        void showNoActiveMeizhis();
-
-        void showNoCompletedMeizhis();
-
-        void showSuccessfullySavedMessage();
-
-        boolean isActive();
-
-        void showFilteringPopUpMenu();
     }
 
-    interface Presenter extends BasePresenter {
-        void result(int requestCode, int resultCode);
+    interface UserActionsListener {
 
-        void loadMeizhis(boolean forceUpdate);
+        void loadAllMeizhis(boolean forceUpdate);
 
         void addNewMeizhi();
 

@@ -23,7 +23,7 @@ import com.dimon.ganwumei.database.entities.Image;
 import com.dimon.ganwumei.database.entities.Meizhi;
 import com.dimon.ganwumei.func.OnMeizhiTouchListener;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
-import com.dimon.ganwumei.injector.modules.GanWuModule;
+import com.dimon.ganwumei.injector.modules.GanWuPresenterModule;
 import com.dimon.ganwumei.mvp.contract.GanWuContract;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
@@ -58,14 +58,26 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
     RecyclerView mRecyclerView;
     @Nullable
     @Bind(R.id.swipe_refresh_layout)
+    private GanWuContract.UserActionsListener mActionsListener;
+
     public MultiSwipeRefreshLayout mSwipeRefreshLayout;
+
     private boolean mIsFirstTimeTouchBottom = true;
+
     private static final int PRELOAD_SIZE = 10;
+
     private Realm mRealm;
+
+    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
+
     private static final String FRAGMENT_INDEX = "fragment_index";
+
     private int mGanWuIndex = -1;
+
     private int mPage = 1;
+
     private List<Meizhi> mMeizhisList;
+
     private boolean mMeizhiBeTouched;
     /**
      * 标志位，标志已经初始化完成
@@ -93,11 +105,10 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
 
     private void initInject() {
         MainActivity activity = (MainActivity)getActivity();
-        DaggerGanWuComponent.builder()
-                .ganWuModule(new GanWuModule())
+        mActionsListener = DaggerGanWuComponent.builder()
+                .ganWuModule(new GanWuPresenterModule(this))
                 .activityComponent(activity.getComponent())
-                .build()
-                .inject(this);
+                .build().getGanWuPresenter();
     }
 
 
@@ -300,6 +311,7 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
         loadData(false);
     }
 
+
     @Override
     public void setLoadingIndicator(boolean active) {
 
@@ -336,52 +348,7 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
     }
 
     @Override
-    public void showNoMeizhis() {
-
-    }
-
-    @Override
-    public void showActiveFilterLabel() {
-
-    }
-
-    @Override
-    public void showCompletedFilterLabel() {
-
-    }
-
-    @Override
-    public void showAllFilterLabel() {
-
-    }
-
-    @Override
-    public void showNoActiveMeizhis() {
-
-    }
-
-    @Override
-    public void showNoCompletedMeizhis() {
-
-    }
-
-    @Override
-    public void showSuccessfullySavedMessage() {
-
-    }
-
-    @Override
-    public boolean isActive() {
+    public boolean isInactive() {
         return false;
-    }
-
-    @Override
-    public void showFilteringPopUpMenu() {
-
-    }
-
-    @Override
-    public void setPresenter(GanWuContract.Presenter presenter) {
-
     }
 }

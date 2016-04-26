@@ -18,7 +18,7 @@ import com.dimon.ganwumei.database.DataManager;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.database.entities.News;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
-import com.dimon.ganwumei.injector.modules.GanWuModule;
+import com.dimon.ganwumei.injector.modules.GanWuPresenterModule;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.AndroidListAdapter;
@@ -76,7 +76,7 @@ public class GanWuListFragment extends BaseFragment {
     private void initInject() {
         MainActivity activity = (MainActivity) getActivity();
         DaggerGanWuComponent.builder()
-                .ganWuModule(new GanWuModule())
+                .ganWuModule(new GanWuPresenterModule())
                 .activityComponent(activity.getComponent())
                 .build()
                 .inject(this);
