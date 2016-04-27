@@ -4,7 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.dimon.ganwumei.database.entities.Meizhi;
 import com.dimon.ganwumei.database.source.GanWuRepository;
+import com.dimon.ganwumei.database.source.MeizhiDataSource;
 import com.dimon.ganwumei.mvp.contract.GanWuContract;
+import com.dimon.ganwumei.util.Preconditions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,11 +32,54 @@ public class GanWuPresenter implements GanWuContract.UserActionsListener {
         loadGanWu(forceUpdate, true);
     }
 
+    /**
+     *
+     * @param forceUpdate 传入true时，会刷新数据
+     * @param showLoadingUI 传入true时，会在UI上刷新界面
+     */
     private void loadGanWu(boolean forceUpdate, final boolean showLoadingUI){
         if (showLoadingUI) {
             mGanWuView.setLoadingIndicator(true);
         }
+        if (forceUpdate){
+            mGanWuRepository.refreshMeizhis();
+        }
+
+        mGanWuRepository.getMeizhis(new MeizhiDataSource.LoadMeizhisCallback() {
+            @Override
+            public void onMeizhisLoaded(List<Meizhi> meizhis) {
+
+                List<Meizhi> meizhiToShow = new ArrayList<Meizhi>();
+
+                for (Meizhi meizhi: meizhis){
+                    meizhiToShow.add(meizhi);
+                }
+
+                if (mGanWuView.isInactive()){
+                    return;
+                }
+
+                if (showLoadingUI){
+                    mGanWuView.setLoadingIndicator(false);
+                }
+
+                mGanWuView.showMeizhis(meizhiToShow);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                if (mGanWuView.isInactive()){
+                    return;
+                }
+
+                mGanWuView.showLoadingMeizhisError();
+            }
+        });
     }
+
+    /**
+     *  上拉刷新
+     */
     @Override
     public void addNewMeizhi() {
 
@@ -39,7 +87,8 @@ public class GanWuPresenter implements GanWuContract.UserActionsListener {
 
     @Override
     public void openMeizhiDetails(@NonNull Meizhi requestedMeizhi) {
-
+        Preconditions.checkNotNull(requestedMeizhi, "requestedMeizhi cannot be null!");
+        mGanWuView.showMeizhiDetailsUi(requestedMeizhi.getUrl());
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface GanWuContract {
 
         void showMeizhis(List<Meizhi> meizhis);
 
-        void showMeizhiDetailsUi(String taskId);
+        void showMeizhiDetailsUi(String meizhiURL);
 
         void showMeizhiMarkedComplete();
 

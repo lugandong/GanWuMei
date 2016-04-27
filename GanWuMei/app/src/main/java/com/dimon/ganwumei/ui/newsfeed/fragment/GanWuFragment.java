@@ -49,24 +49,25 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- *
  * Created by Dimon on 2016/3/23.
  */
-public class GanWuFragment extends BaseFragment implements GanWuContract.View{
+public class GanWuFragment extends BaseFragment implements GanWuContract.View {
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @Nullable
     @Bind(R.id.swipe_refresh_layout)
-    private GanWuContract.UserActionsListener mActionsListener;
+    MultiSwipeRefreshLayout mSwipeRefreshLayout;
 
-    public MultiSwipeRefreshLayout mSwipeRefreshLayout;
+    private GanWuContract.UserActionsListener mActionsListener;
 
     private boolean mIsFirstTimeTouchBottom = true;
 
     private static final int PRELOAD_SIZE = 10;
 
     private Realm mRealm;
+
+    private int mCurrentFiltering;
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
@@ -96,22 +97,39 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
     @Inject
     DataManager mDataManager;
 
+    public GanWuFragment() {
+    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initInject();
+    public GanWuFragment newInstance(){
+        return new GanWuFragment();
     }
 
     private void initInject() {
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
         mActionsListener = DaggerGanWuComponent.builder()
                 .ganWuModule(new GanWuPresenterModule(this))
                 .activityComponent(activity.getComponent())
                 .build().getGanWuPresenter();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(CURRENT_FILTERING_KEY, mCurrentFiltering);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData(false);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -131,26 +149,42 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
         if (parent != null) {
             parent.removeView(view);
         }
+        initRecyclerView();
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        setRetainInstance(true);
+
+        initInject();
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(CURRENT_FILTERING_KEY)) {
+            mCurrentFiltering = savedInstanceState.getInt(CURRENT_FILTERING_KEY);
+
+        } else {
+            mActionsListener.loadAllMeizhis(false);
+        }
+
         trySetupSwipeRefresh();
         new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
-        loadData(false);
+
+
+
+    }
+
+    private void initRecyclerView() {
         KLog.a(mRecyclerView);
         linearLayoutManager = new LinearLayoutManager(context());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
         mRecyclerView.setAdapter(mGanWuAdapter);
 
         mRecyclerView.addOnScrollListener(getOnBottomListener(linearLayoutManager));
         mGanWuAdapter.setOnMeizhiTouchListener(getOnMeizhiTouchListener());
-
     }
 
     private void loadData(boolean clean) {
@@ -234,16 +268,20 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
                 mMeizhiBeTouched = true;
                 Picasso.with(context()).load(meizhi.getUrl()).fetch(new Callback() {
 
-                    @Override public void onSuccess() {
+                    @Override
+                    public void onSuccess() {
                         mMeizhiBeTouched = false;
                         startPictureActivity(meizhi, meizhiView);
                     }
-                    @Override public void onError() {mMeizhiBeTouched = false;}
+
+                    @Override
+                    public void onError() {
+                        mMeizhiBeTouched = false;
+                    }
                 });
-            }
-            else if (v == card) {
+            } else if (v == card) {
 //                startGankActivity(meizhi.getDate());
-                ToastUtils.ToastMessage(context(),"还没做呢...");
+                ToastUtils.ToastMessage(context(), "还没做呢...");
                 KLog.a("TODO...");
             }
         };
@@ -272,7 +310,8 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
 
     RecyclerView.OnScrollListener getOnBottomListener(LinearLayoutManager layoutManager) {
         return new RecyclerView.OnScrollListener() {
-            @Override public void onScrolled(RecyclerView rv, int dx, int dy) {
+            @Override
+            public void onScrolled(RecyclerView rv, int dx, int dy) {
                 boolean isBottom =
                         layoutManager.findLastCompletelyVisibleItemPosition() >=
                                 mGanWuAdapter.getItemCount() - PRELOAD_SIZE;
@@ -281,8 +320,7 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
                         mSwipeRefreshLayout.setRefreshing(true);
                         mPage += 1;
                         loadData(false);
-                    }
-                    else {
+                    } else {
                         mIsFirstTimeTouchBottom = false;
                     }
                 }
@@ -314,7 +352,17 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
 
     @Override
     public void setLoadingIndicator(boolean active) {
+        if (getView() == null){
+            return;
+        }
 
+        assert mSwipeRefreshLayout != null;
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(active);
+            }
+        });
     }
 
     @Override
@@ -349,6 +397,6 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View{
 
     @Override
     public boolean isInactive() {
-        return false;
+        return !isAdded();
     }
 }
