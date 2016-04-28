@@ -19,12 +19,6 @@ public interface GanWuContract {
 
         void showMeizhiDetailsUi(String meizhiURL);
 
-        void showMeizhiMarkedComplete();
-
-        void showMeizhiMarkedActive();
-
-        void showCompletedMeizhisCleared();
-
         void showLoadingMeizhisError();
 
         boolean isInactive();

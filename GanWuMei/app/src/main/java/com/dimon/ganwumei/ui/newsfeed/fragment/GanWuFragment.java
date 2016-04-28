@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -115,6 +116,7 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMeizhisList = new ArrayList<>();
         mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
     }
 
@@ -143,7 +145,7 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
         }
         ButterKnife.bind(this, view);
         mRealm = Realm.getDefaultInstance();
-        mMeizhisList = new ArrayList<>();
+
         //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {
@@ -170,8 +172,6 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
 
         trySetupSwipeRefresh();
         new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
-
-
 
     }
 
@@ -207,6 +207,13 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
                     mGanWuAdapter.notifyDataSetChanged();
                     setRequestDataRefresh(false);
                 }, throwable -> loadError(throwable));
+
+        Observable observable = mRealm
+                .where(Image.class)
+                .isNotNull("desc")
+                .findAllSortedAsync("publishedAt")
+                .asObservable();
+
     }
 
     private void loadError(Throwable throwable) {
@@ -371,24 +378,10 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
     }
 
     @Override
-    public void showMeizhiDetailsUi(String taskId) {
+    public void showMeizhiDetailsUi(String meizhiURL) {
 
     }
 
-    @Override
-    public void showMeizhiMarkedComplete() {
-
-    }
-
-    @Override
-    public void showMeizhiMarkedActive() {
-
-    }
-
-    @Override
-    public void showCompletedMeizhisCleared() {
-
-    }
 
     @Override
     public void showLoadingMeizhisError() {
