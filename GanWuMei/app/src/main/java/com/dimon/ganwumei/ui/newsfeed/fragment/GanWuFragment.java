@@ -23,8 +23,7 @@ import com.dimon.ganwumei.database.entities.Image;
 import com.dimon.ganwumei.database.entities.Meizhi;
 import com.dimon.ganwumei.func.OnMeizhiTouchListener;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
-import com.dimon.ganwumei.injector.modules.GanWuPresenterModule;
-import com.dimon.ganwumei.mvp.contract.GanWuContract;
+import com.dimon.ganwumei.injector.modules.GanWuFragmentModule;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 import com.dimon.ganwumei.ui.newsfeed.activity.PictureActivity;
@@ -44,23 +43,21 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ *
  * Created by Dimon on 2016/3/23.
  */
-public class GanWuFragment extends BaseFragment implements GanWuContract.View {
+public class GanWuFragment extends BaseFragment  {
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @Nullable
     @Bind(R.id.swipe_refresh_layout)
     MultiSwipeRefreshLayout mSwipeRefreshLayout;
-
-    private GanWuContract.UserActionsListener mActionsListener;
 
     private boolean mIsFirstTimeTouchBottom = true;
 
@@ -105,13 +102,6 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
         return new GanWuFragment();
     }
 
-    private void initInject() {
-        MainActivity activity = (MainActivity) getActivity();
-        mActionsListener = DaggerGanWuComponent.builder()
-                .ganWuModule(new GanWuPresenterModule(this))
-                .activityComponent(activity.getComponent())
-                .build().getGanWuPresenter();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,16 +111,8 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_FILTERING_KEY, mCurrentFiltering);
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        loadData(false);
     }
 
     @Override
@@ -151,6 +133,9 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
         if (parent != null) {
             parent.removeView(view);
         }
+        trySetupSwipeRefresh();
+        new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
+        loadData(false);
         initRecyclerView();
         return view;
     }
@@ -162,19 +147,15 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
         setRetainInstance(true);
 
         initInject();
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(CURRENT_FILTERING_KEY)) {
-            mCurrentFiltering = savedInstanceState.getInt(CURRENT_FILTERING_KEY);
-
-        } else {
-            mActionsListener.loadAllMeizhis(false);
-        }
-
-        trySetupSwipeRefresh();
-        new Handler().postDelayed(() -> setRequestDataRefresh(true), 358);
-
     }
-
+    private void initInject() {
+        MainActivity activity = (MainActivity) getActivity();
+        DaggerGanWuComponent.builder()
+                .ganWuFragmentModule(new GanWuFragmentModule())
+                .activityComponent(activity.getComponent())
+                .build()
+                .inject(this);
+    }
     private void initRecyclerView() {
         KLog.a(mRecyclerView);
         linearLayoutManager = new LinearLayoutManager(context());
@@ -207,13 +188,6 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
                     mGanWuAdapter.notifyDataSetChanged();
                     setRequestDataRefresh(false);
                 }, throwable -> loadError(throwable));
-
-        Observable observable = mRealm
-                .where(Image.class)
-                .isNotNull("desc")
-                .findAllSortedAsync("publishedAt")
-                .asObservable();
-
     }
 
     private void loadError(Throwable throwable) {
@@ -356,40 +330,4 @@ public class GanWuFragment extends BaseFragment implements GanWuContract.View {
         loadData(false);
     }
 
-
-    @Override
-    public void setLoadingIndicator(boolean active) {
-        if (getView() == null){
-            return;
-        }
-
-        assert mSwipeRefreshLayout != null;
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(active);
-            }
-        });
-    }
-
-    @Override
-    public void showMeizhis(List<Meizhi> meizhis) {
-
-    }
-
-    @Override
-    public void showMeizhiDetailsUi(String meizhiURL) {
-
-    }
-
-
-    @Override
-    public void showLoadingMeizhisError() {
-
-    }
-
-    @Override
-    public boolean isInactive() {
-        return !isAdded();
-    }
 }

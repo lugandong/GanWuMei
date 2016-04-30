@@ -55,7 +55,7 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 
     compile 'com.jakewharton:butterknife:7.0.1'// 标注
-    compile 'com.jakewharton:disklrucache:2.0.2'
+    compile 'com.jakewharton:disklrucache:2.0.2'//缓存
 
     apt 'com.google.dagger:dagger-compiler:2.0.2' //指定注解处理器
     compile 'com.google.dagger:dagger:2.0.2' // dagger2公用api
