@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dimon.ganwumei.R;
+import com.dimon.ganwumei.api.Constant;
 import com.dimon.ganwumei.database.DataManager;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.database.entities.News;
@@ -21,13 +22,14 @@ import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.modules.GanWuFragmentModule;
 import com.dimon.ganwumei.ui.base.BaseFragment;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
-import com.dimon.ganwumei.ui.newsfeed.adapter.AndroidListAdapter;
-import com.dimon.ganwumei.util.GanWuDataToItemsMapper;
+import com.dimon.ganwumei.ui.newsfeed.adapter.GanWuListAdapter;
+import com.dimon.ganwumei.util.RandomDatatToItemsMapper;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -50,12 +52,11 @@ public class GanWuListFragment extends BaseFragment {
     private Realm mRealm;
     private View view;
     private List<Item> mNewsList;
-    private static final String FRAGMENT_INDEX = "fragment_index";
-    private int mGanWuIndex = -1;
+    private String mGanWuType = "";
     private int mPage = 1;
     private LinearLayoutManager linearLayoutManager;
     protected Subscription subscription;
-    private AndroidListAdapter mAndroidListAdapter;
+    private GanWuListAdapter mGanWuListAdapter;
     private boolean mIsRequestDataRefresh = false;
 
     // 标志位，标志已经初始化完成
@@ -90,7 +91,8 @@ public class GanWuListFragment extends BaseFragment {
             //获取索引值
             Bundle bundle = getArguments();
             if (bundle != null) {
-                mGanWuIndex = bundle.getInt(FRAGMENT_INDEX);
+                mGanWuType = bundle.getString(Constant.FRAGMENT_TYPE);
+                KLog.a(mGanWuType);
             }
         }
         ButterKnife.bind(this, view);
@@ -116,30 +118,50 @@ public class GanWuListFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAndroidListAdapter = new AndroidListAdapter(mNewsList, context());
-        mRecyclerView.setAdapter(mAndroidListAdapter);
+        mGanWuListAdapter = new GanWuListAdapter(mNewsList, context());
+        mRecyclerView.setAdapter(mGanWuListAdapter);
     }
 
     private void loadData(boolean clean) {
-        subscription = mRealm
-                .where(News.class)
-                .findAllSortedAsync("publishedAt")
-                .asObservable()
-                .filter(newses -> newses.isLoaded())
-                .flatMap(newses1 ->
-                        mDataManager.getGanWuData("2016", "04", "20")
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread()))
-                .map(GanWuDataToItemsMapper.getInstance())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newsess -> {
-                    if (clean) mNewsList.clear();
-                    mNewsList.addAll(newsess);
-                    mAndroidListAdapter.notifyDataSetChanged();
-                    setRequestDataRefresh(false);
-                }, throwable -> loadError(throwable));
-        addSubscription(subscription);
+        if (Objects.equals(mGanWuType, Constant.ANDROID)) {
+            subscription = mRealm
+                    .where(News.class)
+                    .findAllSortedAsync("publishedAt")
+                    .asObservable()
+                    .filter(newses -> newses.isLoaded())
+                    .flatMap(newses1 ->
+                            mDataManager.getRandomData(Constant.ANDROID, "20")
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread()))
+                    .map(RandomDatatToItemsMapper.getInstance())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(newsess -> {
+                        if (clean) mNewsList.clear();
+                        mGanWuListAdapter.updateItems(newsess,true);
+                        setRequestDataRefresh(false);
+                    }, throwable -> loadError(throwable));
+            addSubscription(subscription);
+        } else {
+            subscription = mRealm
+                    .where(News.class)
+                    .findAllSortedAsync("publishedAt")
+                    .asObservable()
+                    .filter(newses -> newses.isLoaded())
+                    .flatMap(newses1 ->
+                            mDataManager.getRandomData(Constant.IOS, "20")
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread()))
+                    .map(RandomDatatToItemsMapper.getInstance())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(newsess -> {
+                        if (clean) mNewsList.clear();
+                        mGanWuListAdapter.updateItems(newsess,true);
+                        setRequestDataRefresh(false);
+                    }, throwable -> loadError(throwable));
+            addSubscription(subscription);
+        }
     }
 
     private void loadError(Throwable throwable) {
@@ -154,7 +176,6 @@ public class GanWuListFragment extends BaseFragment {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_3,
                     R.color.refresh_progress_2, R.color.refresh_progress_1);
-            // do not use lambda!!
             mSwipeRefreshLayout.setOnRefreshListener(
                     new SwipeRefreshLayout.OnRefreshListener() {
                         @Override

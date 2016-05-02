@@ -32,4 +32,9 @@ public class DataManager {
     public Observable<GanWuData> getGanWuData(String year,String month,String day){
         return mRestAPI.getGanWuData(year,month,day);
     }
+
+    //返回随机的GanWu
+    public Observable<RandomData> getRandomData(String type,String page){
+        return mRestAPI.getRandomData(type,page);
+    }
 }

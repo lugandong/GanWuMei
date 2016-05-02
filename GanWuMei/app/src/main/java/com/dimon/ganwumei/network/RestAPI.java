@@ -21,6 +21,7 @@ package com.dimon.ganwumei.network;
 
 import com.dimon.ganwumei.database.GanWuData;
 import com.dimon.ganwumei.database.ImageData;
+import com.dimon.ganwumei.database.RandomData;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -41,4 +42,8 @@ public interface RestAPI {
             @Path("month") String month,
             @Path("day") String day);
 
+    @GET("random/data/{type}/{page}")
+    Observable<RandomData> getRandomData(
+            @Path("type") String type,
+            @Path("page") String page);
 }

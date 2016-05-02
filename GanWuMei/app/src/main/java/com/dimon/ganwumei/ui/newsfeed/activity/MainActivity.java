@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dimon.ganwumei.R;
+import com.dimon.ganwumei.api.Constant;
 import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.ActivityComponent;
 import com.dimon.ganwumei.injector.components.DaggerActivityComponent;
@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
     AppBarLayout mAppBar;
 
     private ActivityComponent activityComponent;
-    private static final String FRAGMENT_INDEX = "fragment_index";
 
     ActionBarDrawerToggle drawerToggle;
 
@@ -108,31 +107,31 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
 
 
     private void initializeTab() {
-        mTab.addTab(mTab.newTab().setText("All"));
-        mTab.addTab(mTab.newTab().setText("Android"));
-        mTab.addTab(mTab.newTab().setText("iOS"));
+        mTab.addTab(mTab.newTab().setText(Constant.ALL));
+        mTab.addTab(mTab.newTab().setText(Constant.ANDROID));
+        mTab.addTab(mTab.newTab().setText(Constant.IOS));
         List<String> tabList = new ArrayList<>();
-        tabList.add("All");
-        tabList.add("Android");
-        tabList.add("iOS");
+        tabList.add(Constant.ALL);
+        tabList.add(Constant.ANDROID);
+        tabList.add(Constant.IOS);
         List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < tabList.size(); i++) {
             if (i == 0) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt(FRAGMENT_INDEX,0);
+                bundle.putString(Constant.FRAGMENT_TYPE,Constant.ALL);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else if (i == 1) {
                 Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt(FRAGMENT_INDEX,1);
+                bundle.putString(Constant.FRAGMENT_TYPE,Constant.ANDROID);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else {
                 Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt(FRAGMENT_INDEX,2);
+                bundle.putString(Constant.FRAGMENT_TYPE,Constant.IOS);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             }
@@ -165,14 +164,8 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(rootLayout, "Hello. I am Snackbar!", Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
 
-                            }
-                        })
-                        .show();
+
             }
         });
 
@@ -203,13 +196,8 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

@@ -54,7 +54,8 @@
             android:layout_marginRight="@dimen/fab_margin_right"
             android:src="@drawable/ic_fab_add"
             app:borderWidth="0dp"
-            app:fabSize="normal"/>
+            app:fabSize="normal"
+            app:layout_behavior="com.dimon.ganwumei.widget.ScrollAwareFABBehavior"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

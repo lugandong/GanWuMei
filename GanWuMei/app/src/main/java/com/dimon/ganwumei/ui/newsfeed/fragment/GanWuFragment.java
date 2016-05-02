@@ -48,10 +48,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- *
  * Created by Dimon on 2016/3/23.
  */
-public class GanWuFragment extends BaseFragment  {
+public class GanWuFragment extends BaseFragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -98,7 +97,7 @@ public class GanWuFragment extends BaseFragment  {
     public GanWuFragment() {
     }
 
-    public GanWuFragment newInstance(){
+    public GanWuFragment newInstance() {
         return new GanWuFragment();
     }
 
@@ -148,6 +147,7 @@ public class GanWuFragment extends BaseFragment  {
 
         initInject();
     }
+
     private void initInject() {
         MainActivity activity = (MainActivity) getActivity();
         DaggerGanWuComponent.builder()
@@ -156,6 +156,7 @@ public class GanWuFragment extends BaseFragment  {
                 .build()
                 .inject(this);
     }
+
     private void initRecyclerView() {
         KLog.a(mRecyclerView);
         linearLayoutManager = new LinearLayoutManager(context());
@@ -163,7 +164,6 @@ public class GanWuFragment extends BaseFragment  {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mGanWuAdapter);
-
         mRecyclerView.addOnScrollListener(getOnBottomListener(linearLayoutManager));
         mGanWuAdapter.setOnMeizhiTouchListener(getOnMeizhiTouchListener());
     }
@@ -184,8 +184,7 @@ public class GanWuFragment extends BaseFragment  {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(images3 -> {
                     if (clean) mMeizhisList.clear();
-                    mMeizhisList.addAll(images3);
-                    mGanWuAdapter.notifyDataSetChanged();
+                    mGanWuAdapter.updateItems(images3,true);
                     setRequestDataRefresh(false);
                 }, throwable -> loadError(throwable));
     }
@@ -236,10 +235,6 @@ public class GanWuFragment extends BaseFragment  {
         } else {
             mSwipeRefreshLayout.setRefreshing(true);
         }
-    }
-
-    public Context context() {
-        return this.getActivity();
     }
 
     private OnMeizhiTouchListener getOnMeizhiTouchListener() {
@@ -307,6 +302,10 @@ public class GanWuFragment extends BaseFragment  {
                 }
             }
         };
+    }
+
+    public Context context() {
+        return this.getActivity();
     }
 
     @Override
