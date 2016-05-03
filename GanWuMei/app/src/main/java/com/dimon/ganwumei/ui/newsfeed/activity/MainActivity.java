@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -53,6 +54,8 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
     @Nullable
     @Bind(R.id.app_bar_layout)
     AppBarLayout mAppBar;
+    @Bind(R.id.navigation)
+    NavigationView mNavigation;
 
     private ActivityComponent activityComponent;
 
@@ -119,19 +122,19 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
             if (i == 0) {
                 Fragment fragment = new GanWuFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.FRAGMENT_TYPE,Constant.ALL);
+                bundle.putString(Constant.FRAGMENT_TYPE, Constant.ALL);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else if (i == 1) {
                 Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.FRAGMENT_TYPE,Constant.ANDROID);
+                bundle.putString(Constant.FRAGMENT_TYPE, Constant.ANDROID);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             } else {
                 Fragment fragment = new GanWuListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.FRAGMENT_TYPE,Constant.IOS);
+                bundle.putString(Constant.FRAGMENT_TYPE, Constant.IOS);
                 fragment.setArguments(bundle);
                 fragmentList.add(fragment);
             }
@@ -169,6 +172,23 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
             }
         });
 
+        mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.navItem1:
+                        break;
+                    case R.id.navItem2:
+                        break;
+                    case R.id.navItem3:
+                        break;
+                    case R.id.navItem4:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
 
