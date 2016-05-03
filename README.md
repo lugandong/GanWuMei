@@ -15,7 +15,7 @@
 
 - 感谢[drakeet](https://drakeet.me/)的[Meizhi](https://github.com/drakeet/Meizhi)
 
-=======
+
 一个分享干货的APP，运用了现在较火的MVP架构，运用Dagger2+Retrofit2+RxJava所制作的一个关于干货分享的开源项目，API接口由gank.io提供。
 
 # 感谢
