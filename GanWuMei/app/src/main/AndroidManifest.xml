@@ -26,7 +26,7 @@
         <activity
             android:name=".ui.newsfeed.activity.MainActivity">
         </activity>
-        <activity android:name=".ui.newsfeed.activity.NewsActivity"/>
+        <activity android:name=".ui.newsfeed.activity.GanDailyActivity"/>
         <activity
             android:name=".ui.newsfeed.activity.PictureActivity"
             android:label="@string/title_activity_picture"

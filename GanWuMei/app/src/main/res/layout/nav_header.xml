@@ -16,13 +16,14 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="36dp"
         android:padding="8dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/ic_avatar"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:paddingLeft="25dp"
+        android:paddingLeft="40dp"
         android:paddingBottom="10dp"
         android:text="Dimon  "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>

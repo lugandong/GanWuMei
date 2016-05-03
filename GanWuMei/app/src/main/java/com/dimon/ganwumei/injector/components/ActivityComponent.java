@@ -6,6 +6,7 @@ import com.dimon.ganwumei.database.DataManager;
 import com.dimon.ganwumei.injector.scope.ActivityScope;
 import com.dimon.ganwumei.injector.modules.ActivityModule;
 import com.dimon.ganwumei.ui.base.BaseActivity;
+import com.dimon.ganwumei.ui.newsfeed.activity.GanDailyActivity;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 
 import dagger.Component;
@@ -18,6 +19,7 @@ import dagger.Component;
 public interface ActivityComponent {
     void inject(BaseActivity baseActivity);
     void inject(MainActivity mainActivity);
+    void inject(GanDailyActivity ganDailyActivity);
 
     Context CONTEXT();
     DataManager DATA_MANAGER();

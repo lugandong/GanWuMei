@@ -123,6 +123,7 @@ public class GanWuListFragment extends BaseFragment {
     }
 
     private void loadData(boolean clean) {
+        KLog.a(mDataManager);
         if (Objects.equals(mGanWuType, Constant.ANDROID)) {
             subscription = mRealm
                     .where(News.class)

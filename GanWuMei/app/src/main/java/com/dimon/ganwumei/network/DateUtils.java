@@ -2,7 +2,9 @@ package com.dimon.ganwumei.network;
 
 import android.support.annotation.Nullable;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -27,5 +29,17 @@ public class DateUtils {
         }
 
         return date.split("-");
+    }
+
+    public static String toDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        return dateFormat.format(date);
+    }
+
+    public static String toDate(Date date, int add) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, add);
+        return toDate(calendar.getTime());
     }
 }
