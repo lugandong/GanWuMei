@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/news_header"
                 android:layout_margin="15dp"
+                android:text="今日说法"
                 android:maxLines="2"/>
 
 

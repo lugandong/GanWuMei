@@ -15,4 +15,5 @@
     <dimen name="expanded_toolbar_title_margin_start">16dp</dimen>
 
     <dimen name="nav_drawer_width">260dp</dimen>
+    <dimen name="gank_header_height">224dp</dimen>
 </resources>

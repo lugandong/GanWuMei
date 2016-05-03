@@ -45,10 +45,10 @@
     <string name="news_three_title">Australia in charge of second Test against West Indies in Jamaica</string>
     <string name="news_three_desc">Australia in charge of second Test against West Indies in Jamaica</string>
     <string name="news_four_title">Sweden royal wedding</string>
-    <string name="news_four_desc">嘿~如果觉得这篇文章对您有帮助，希望你能点个赞，你可以通过订阅微信公众号：ITBird，或新浪微博：明桑Anroid 找到我，记得关注博客哦</string>
     <string name="hello_world">Hello world!</string>
     <string name="snap_load_fail">加载失败，请重试</string>
     <string name="retry">重试</string>
     <string name="title_activity_picture">PictureActivity</string>
     <string name="ask_saving_picture">保存至手机？</string>
+    <string name="tip_empty_ganwu">宁欺白须公，\n莫欺少年穷，\n终须有日龙穿凤，\n唔信一世裤穿窿！\n \n今日辛勤的编剧们休息，木有干货看哟！\n \n如果想与我交流一起完善Gan物妹的话~\n可以联系我哟~也可以Fork这个小项目喔~ \n \n https://github.com/Dimon94/GanWuMei</string>
 </resources>

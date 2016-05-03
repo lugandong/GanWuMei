@@ -25,17 +25,18 @@ import com.dimon.ganwumei.func.OnMeizhiTouchListener;
 import com.dimon.ganwumei.injector.components.DaggerGanWuComponent;
 import com.dimon.ganwumei.injector.modules.GanWuFragmentModule;
 import com.dimon.ganwumei.ui.base.BaseFragment;
+import com.dimon.ganwumei.ui.newsfeed.activity.GanDailyActivity;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 import com.dimon.ganwumei.ui.newsfeed.activity.PictureActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.GanWuAdapter;
 import com.dimon.ganwumei.util.ImageToMeizhiMapper;
-import com.dimon.ganwumei.util.ToastUtils;
 import com.dimon.ganwumei.widget.MultiSwipeRefreshLayout;
 import com.socks.library.KLog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,10 +65,6 @@ public class GanWuFragment extends BaseFragment {
 
     private Realm mRealm;
 
-    private int mCurrentFiltering;
-
-    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
-
     private static final String FRAGMENT_INDEX = "fragment_index";
 
     private int mGanWuIndex = -1;
@@ -77,14 +74,10 @@ public class GanWuFragment extends BaseFragment {
     private List<Meizhi> mMeizhisList;
 
     private boolean mMeizhiBeTouched;
-    /**
-     * 标志位，标志已经初始化完成
-     */
-    private boolean isPrepared;
-    /**
-     * 是否已被加载过一次，第二次就不再去请求数据了
-     */
-    private boolean mHasLoadedOnce;
+
+    private boolean isPrepared;//标志位，标志已经初始化完成
+
+    private boolean mHasLoadedOnce;//是否已被加载过一次，第二次就不再去请求数据了
     private View view;
     private LinearLayoutManager linearLayoutManager;
     protected Subscription subscription;
@@ -107,6 +100,8 @@ public class GanWuFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mMeizhisList = new ArrayList<>();
         mGanWuAdapter = new GanWuAdapter(mMeizhisList, context());
+        initInject();
+        setRetainInstance(true);
     }
 
     @Override
@@ -139,15 +134,6 @@ public class GanWuFragment extends BaseFragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setRetainInstance(true);
-
-        initInject();
-    }
-
     private void initInject() {
         MainActivity activity = (MainActivity) getActivity();
         DaggerGanWuComponent.builder()
@@ -169,6 +155,7 @@ public class GanWuFragment extends BaseFragment {
     }
 
     private void loadData(boolean clean) {
+        KLog.a(mDataManager);
         subscription = mRealm
                 .where(Image.class)
                 .isNotNull("desc")
@@ -184,6 +171,7 @@ public class GanWuFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(images3 -> {
                     if (clean) mMeizhisList.clear();
+                    mMeizhisList.addAll(images3);
                     mGanWuAdapter.updateItems(images3,true);
                     setRequestDataRefresh(false);
                 }, throwable -> loadError(throwable));
@@ -256,17 +244,16 @@ public class GanWuFragment extends BaseFragment {
                     }
                 });
             } else if (v == card) {
-//                startGankActivity(meizhi.getDate());
-                ToastUtils.ToastMessage(context(), "还没做呢...");
-                KLog.a("TODO...");
+                startGanDailyActivity(meizhi.getDate());
+
             }
         };
     }
-//    private void startGankActivity(Date publishedAt) {
-//        Intent intent = new Intent(this, GankActivity.class);
-//        intent.putExtra(GankActivity.EXTRA_GANK_DATE, publishedAt);
-//        startActivity(intent);
-//    }
+    private void startGanDailyActivity(Date publishedAt) {
+        Intent intent = new Intent(context(), GanDailyActivity.class);
+        intent.putExtra(GanDailyActivity.EXTRA_GAN_DATE, publishedAt);
+        startActivity(intent);
+    }
 
 
     private void startPictureActivity(Meizhi meizhi, View transitView) {

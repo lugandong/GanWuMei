@@ -29,7 +29,7 @@ public class DataManager {
     }
 
     //返回每日GanWu的信息
-    public Observable<GanWuData> getGanWuData(String year,String month,String day){
+    public Observable<GanWuData> getGanWuData(int year,int month,int day){
         return mRestAPI.getGanWuData(year,month,day);
     }
 
