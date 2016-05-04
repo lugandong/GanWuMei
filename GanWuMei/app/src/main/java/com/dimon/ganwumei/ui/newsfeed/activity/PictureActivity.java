@@ -91,7 +91,7 @@ public class PictureActivity extends BaseActivity {
         });
     }
     private void saveImageToGallery() {
-        ToastUtils.ToastMessage(this,"保存图片");
+        ToastUtils.showShort(R.string.saved);
     }
     @Override public void onResume() {
         super.onResume();

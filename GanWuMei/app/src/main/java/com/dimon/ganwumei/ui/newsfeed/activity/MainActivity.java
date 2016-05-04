@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.ui.newsfeed.activity;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,18 +20,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.api.Constant;
 import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.ActivityComponent;
 import com.dimon.ganwumei.injector.components.DaggerActivityComponent;
+import com.dimon.ganwumei.ui.AboutActivity;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.TabFragmentAdapter;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuFragment;
 import com.dimon.ganwumei.ui.newsfeed.fragment.GanWuListFragment;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -80,21 +85,16 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
 
     private void initializeToolbar() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("GanWuMei");
-
+        mToolbar.setTitle("Gan物妹");
         if (mToolbar == null || mAppBar == null) {
             throw new IllegalStateException("No toolbar");
         }
-
         mToolbar.setOnClickListener(v -> onToolbarClick());
-
         setSupportActionBar(mToolbar);
-
         if (canBack()) {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         if (Build.VERSION.SDK_INT >= 21) {
             mAppBar.setElevation(10.6f);
         }
@@ -162,13 +162,15 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
-
         fabBtn = (FloatingActionButton) findViewById(R.id.fabBtn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                KLog.a(curDate);
+                Intent intent = new Intent(MainActivity.this, GanDailyActivity.class);
+                intent.putExtra(GanDailyActivity.EXTRA_GAN_DATE, curDate);
+                startActivity(intent);
             }
         });
 
@@ -178,12 +180,18 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
                 int id = item.getItemId();
                 switch (id){
                     case R.id.navItem1:
+                        Intent intent1 = new Intent(MainActivity.this,MainActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.navItem2:
+                        Toast.makeText(MainActivity.this, "呆毛我还没做收藏夹功能呢/(ㄒoㄒ)/~~", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.navItem3:
+                        Intent intent3 = new Intent(MainActivity.this,AboutActivity.class);
+                        startActivity(intent3);
                         break;
                     case R.id.navItem4:
+                        Toast.makeText(MainActivity.this, "这是呆毛我第一个练手小项目/(ㄒoㄒ)/~~谢谢支持~~！", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
@@ -207,7 +215,6 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -217,18 +224,28 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_about:
+                Intent intent = new Intent(MainActivity.this,AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_search:
+                return true;
+            case R.id.action_share:
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        ButterKnife.unbind(this);
     }
 
     @Override

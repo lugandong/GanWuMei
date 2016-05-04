@@ -40,6 +40,7 @@
     <color name="icons">#212121</color>
     <color name="divider">#B6B6B6</color>
     <color name="black">#ffeeeeee</color>
+    <color name="super_light_grey">#BDC0BA</color>
 
 
 </resources>

@@ -31,5 +31,9 @@
             android:name=".ui.newsfeed.activity.PictureActivity"
             android:label="@string/title_activity_picture"
             android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.newsfeed.activity.WebActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.AboutActivity"/>
     </application>
 </manifest>

@@ -51,4 +51,16 @@
     <string name="title_activity_picture">PictureActivity</string>
     <string name="ask_saving_picture">保存至手机？</string>
     <string name="tip_empty_ganwu">宁欺白须公，\n莫欺少年穷，\n终须有日龙穿凤，\n唔信一世裤穿窿！\n \n今日辛勤的编剧们休息，木有干货看哟！\n \n如果想与我交流一起完善Gan物妹的话~\n可以联系我哟~也可以Fork这个小项目喔~ \n \n https://github.com/Dimon94/GanWuMei</string>
+    <string name="action_refresh">刷新页面</string>
+    <string name="action_copy_url">复制链接</string>
+    <string name="action_open_url">在外部浏览器打开链接</string>
+    <string name="tip_copy_done">复制成功</string>
+    <string name="saved">保存成功</string>
+    <string name="tip_open_fail">打开失败，没有找到可以开启传送门的其他应用＞﹏＜</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_favorite">Favorite</string>
+    <string name="nav_about">About</string>
+    <string name="nav_somewords">More</string>
+    <string name="tip_about">我就是我，只是颜色不一样的呆毛！！！\n \n作为我第一个练手小项目，果断用上了一些我喜欢的新潮的技术~\n例如：Retrofit2、Dagger2、Realm、RxJava等~ \n当然还有我们的MD设计哟~(*^__^*)~ \n \n我的GitHub：https://github.com/Dimon94\n\n基本架构是高仿drakeet大神的作品，在这里感谢大神开源！感谢开源世界！！\n\n本人是一名大四学生，有实习的话可以联系我哟~嗤嗤嗤~\n\n联系方式：elisabethzhen@163.com\n博客：https://dimon94.github.io/</string>
+    <string name="app_name_with_introduce">Gan物妹</string>
 </resources>

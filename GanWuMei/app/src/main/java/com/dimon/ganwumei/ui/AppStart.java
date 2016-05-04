@@ -72,8 +72,6 @@ public class AppStart extends BaseActivity {
 
     /** 初始化工作 */
     private void initApp() {
-        //10M的volley缓存
-        //VolleyManager.INSTANCE.initQueue((10 << 10) << 10);
         FileStore.INSTANCE.createFileFolder();
     }
 

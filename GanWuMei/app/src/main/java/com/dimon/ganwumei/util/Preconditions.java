@@ -14,7 +14,13 @@
 
 package com.dimon.ganwumei.util;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.widget.Toast;
 
 
 public class Preconditions {
@@ -113,5 +119,20 @@ public class Preconditions {
         }
 
         return builder.toString();
+    }
+
+    public static void copyToClipBoard(Context context, String text, String success) {
+        ClipData clipData = ClipData.newPlainText("meizhi_copy", text);
+        ClipboardManager manager = (ClipboardManager) context.getSystemService(
+                Context.CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(clipData);
+        Toast.makeText(context, success, Toast.LENGTH_SHORT).show();
+    }
+
+    public static SpannableString format(Context context, String text, int style) {
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new TextAppearanceSpan(context, style), 0, text.length(),
+                0);
+        return spannableString;
     }
 }

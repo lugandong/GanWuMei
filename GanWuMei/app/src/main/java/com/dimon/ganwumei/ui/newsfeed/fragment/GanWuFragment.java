@@ -49,6 +49,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ *
  * Created by Dimon on 2016/3/23.
  */
 public class GanWuFragment extends BaseFragment {
@@ -174,6 +175,7 @@ public class GanWuFragment extends BaseFragment {
                     mMeizhisList.addAll(images3);
                     mGanWuAdapter.updateItems(images3,true);
                     setRequestDataRefresh(false);
+                    mHasLoadedOnce = true;
                 }, throwable -> loadError(throwable));
     }
 
@@ -182,6 +184,7 @@ public class GanWuFragment extends BaseFragment {
         Snackbar.make(mRecyclerView, R.string.snap_load_fail,
                 Snackbar.LENGTH_LONG).setAction(R.string.retry, v -> {
             requestDataRefresh();
+            loadData(true);
         }).show();
     }
 
@@ -211,7 +214,6 @@ public class GanWuFragment extends BaseFragment {
         }
         if (!requestDataRefresh) {
             mIsRequestDataRefresh = false;
-            // 防止刷新消失太快，让子弹飞一会儿.
             mSwipeRefreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -245,7 +247,6 @@ public class GanWuFragment extends BaseFragment {
                 });
             } else if (v == card) {
                 startGanDailyActivity(meizhi.getDate());
-
             }
         };
     }

@@ -1,4 +1,4 @@
-package com.dimon.ganwumei.network;
+package com.dimon.ganwumei.util;
 
 import android.support.annotation.Nullable;
 
@@ -42,4 +42,6 @@ public class DateUtils {
         calendar.add(Calendar.DATE, add);
         return toDate(calendar.getTime());
     }
+
+
 }
