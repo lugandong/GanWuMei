@@ -36,6 +36,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ * 每日的干货信息
  * Created by Dimon on 2016/5/3.
  */
 public class GanDailyFragment extends BaseFragment {
@@ -142,7 +143,6 @@ public class GanDailyFragment extends BaseFragment {
         }
         if (!requestDataRefresh) {
             mIsRequestDataRefresh = false;
-            // 防止刷新消失太快，让子弹飞一会儿.
             mSwipeRefreshLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -176,8 +176,9 @@ public class GanDailyFragment extends BaseFragment {
                         showEmptyView();
                     } else {
                         mAdapter.notifyDataSetChanged();
-                        setRequestDataRefresh(false);
                     }
+                    setRequestDataRefresh(false);
+                    mHasLoadedOnce = true;
                 }, throwable -> loadError(throwable));
     }
 
@@ -186,6 +187,7 @@ public class GanDailyFragment extends BaseFragment {
         Snackbar.make(mRecyclerView, R.string.snap_load_fail,
                 Snackbar.LENGTH_LONG).setAction(R.string.retry, v -> {
             requestDataRefresh();
+            loadData();
         }).show();
     }
 

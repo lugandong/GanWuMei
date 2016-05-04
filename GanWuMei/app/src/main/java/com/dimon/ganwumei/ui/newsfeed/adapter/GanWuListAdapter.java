@@ -1,7 +1,7 @@
 package com.dimon.ganwumei.ui.newsfeed.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,13 @@ import android.widget.TextView;
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.database.entities.Item;
 import com.dimon.ganwumei.ui.UiHelper;
+import com.dimon.ganwumei.ui.newsfeed.activity.WebActivity;
 
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  *
@@ -30,17 +35,23 @@ public class GanWuListAdapter extends RecyclerView.Adapter<GanWuListAdapter.News
     }
 
     //自定义ViewHolder类
-    static class NewsViewHolder extends RecyclerView.ViewHolder{
+     class NewsViewHolder extends RecyclerView.ViewHolder{
 
-        CardView cardView;
+        @Bind(R.id.news_who)
         TextView news_who;
+        @Bind(R.id.news_desc)
         TextView news_desc;
 
         public NewsViewHolder(final View itemView) {
             super(itemView);
-            cardView= (CardView) itemView.findViewById(R.id.card_view);
-            news_who= (TextView) itemView.findViewById(R.id.news_who);
-            news_desc= (TextView) itemView.findViewById(R.id.news_desc);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.card_view)
+        void onGanWu(View v) {
+            Item item = mItems.get(getLayoutPosition());
+            Intent intent = WebActivity.newIntent(v.getContext(), item.getUrl(), item.getDescription());
+            v.getContext().startActivity(intent);
         }
 
     }

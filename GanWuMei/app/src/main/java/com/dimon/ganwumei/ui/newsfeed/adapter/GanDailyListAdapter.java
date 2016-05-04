@@ -1,6 +1,8 @@
 package com.dimon.ganwumei.ui.newsfeed.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,9 @@ import android.widget.TextView;
 
 import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.database.entities.News;
+import com.dimon.ganwumei.ui.newsfeed.activity.WebActivity;
+import com.dimon.ganwumei.util.Preconditions;
+import com.socks.library.KLog;
 
 import java.util.List;
 
@@ -16,12 +21,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ *
  * Created by Dimon on 2016/5/3.
  */
 public class GanDailyListAdapter extends AnimRecyclerViewAdapter<GanDailyListAdapter.ViewHolder> {
 
     private List<News> mGanList;
-
 
     public GanDailyListAdapter(List<News> ganList) {
         mGanList = ganList;
@@ -51,9 +56,13 @@ public class GanDailyListAdapter extends AnimRecyclerViewAdapter<GanDailyListAda
             }
         }
         holder.category.setText(news.getType());
+        SpannableStringBuilder builder = new SpannableStringBuilder(news.getDesc()).append(
+                Preconditions.format(holder.ganwu.getContext(), " (via. " +
+                        news.getWho() +
+                        ")", R.style.ViaTextAppearance));
+        CharSequence ganwuText = builder.subSequence(0, builder.length());
 
-
-        holder.ganwu.setText(news.getDesc() + "(via." + news.getWho() + ")");
+        holder.ganwu.setText(ganwuText);
         showItemAnim(holder.ganwu, position);
     }
 
@@ -99,8 +108,9 @@ public class GanDailyListAdapter extends AnimRecyclerViewAdapter<GanDailyListAda
         @OnClick(R.id.card_view)
         void onGank(View v) {
             News news = mGanList.get(getLayoutPosition());
-//            Intent intent = WebActivity.newIntent(v.getContext(), news.getUrl(), news.getDesc());
-//            v.getContext().startActivity(intent);
+            Intent intent = WebActivity.newIntent(v.getContext(), news.getUrl(), news.getDesc());
+            KLog.d(intent);
+            v.getContext().startActivity(intent);
         }
     }
 }

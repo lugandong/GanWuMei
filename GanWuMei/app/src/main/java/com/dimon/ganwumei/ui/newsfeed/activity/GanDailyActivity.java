@@ -17,7 +17,7 @@ import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.injector.HasComponent;
 import com.dimon.ganwumei.injector.components.ActivityComponent;
 import com.dimon.ganwumei.injector.components.DaggerActivityComponent;
-import com.dimon.ganwumei.network.DateUtils;
+import com.dimon.ganwumei.util.DateUtils;
 import com.dimon.ganwumei.ui.base.BaseActivity;
 import com.dimon.ganwumei.ui.newsfeed.adapter.GanDailyPagerAdapter;
 import com.umeng.analytics.MobclickAgent;
@@ -110,7 +110,8 @@ public class GanDailyActivity extends BaseActivity implements ViewPager.OnPageCh
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 if (getResources().getConfiguration().orientation ==
@@ -122,12 +123,14 @@ public class GanDailyActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
 
@@ -146,12 +149,14 @@ public class GanDailyActivity extends BaseActivity implements ViewPager.OnPageCh
 
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }

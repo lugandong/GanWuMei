@@ -41,6 +41,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ * 每日随机干货
  * Created by Dimon on 2016/4/20.
  */
 public class GanWuListFragment extends BaseFragment {
@@ -53,17 +54,12 @@ public class GanWuListFragment extends BaseFragment {
     private View view;
     private List<Item> mNewsList;
     private String mGanWuType = "";
-    private int mPage = 1;
     private LinearLayoutManager linearLayoutManager;
     protected Subscription subscription;
     private GanWuListAdapter mGanWuListAdapter;
     private boolean mIsRequestDataRefresh = false;
-
-    // 标志位，标志已经初始化完成
-    private boolean isPrepared;
-
-    // 是否已被加载过一次，第二次就不再去请求数据了
-    private boolean mHasLoadedOnce;
+    private boolean isPrepared;    // 标志位，标志已经初始化完成
+    private boolean mHasLoadedOnce;    // 是否已被加载过一次，第二次就不再去请求数据了
 
     @Inject
     DataManager mDataManager;
@@ -141,6 +137,7 @@ public class GanWuListFragment extends BaseFragment {
                         if (clean) mNewsList.clear();
                         mGanWuListAdapter.updateItems(newsess,true);
                         setRequestDataRefresh(false);
+                        mHasLoadedOnce = true;
                     }, throwable -> loadError(throwable));
             addSubscription(subscription);
         } else {
@@ -160,6 +157,7 @@ public class GanWuListFragment extends BaseFragment {
                         if (clean) mNewsList.clear();
                         mGanWuListAdapter.updateItems(newsess,true);
                         setRequestDataRefresh(false);
+                        mHasLoadedOnce = true;
                     }, throwable -> loadError(throwable));
             addSubscription(subscription);
         }
@@ -170,6 +168,7 @@ public class GanWuListFragment extends BaseFragment {
         Snackbar.make(mRecyclerView, R.string.snap_load_fail,
                 Snackbar.LENGTH_LONG).setAction(R.string.retry, v -> {
             requestDataRefresh();
+            loadData(true);
         }).show();
     }
 
@@ -189,7 +188,6 @@ public class GanWuListFragment extends BaseFragment {
 
     public void requestDataRefresh() {
         mIsRequestDataRefresh = true;
-        mPage = 1;
     }
 
     public void setRequestDataRefresh(boolean requestDataRefresh) {

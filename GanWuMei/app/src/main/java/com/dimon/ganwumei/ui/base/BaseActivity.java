@@ -73,6 +73,9 @@ public abstract class BaseActivity extends AppCompatActivity{
             case R.id.action_share:
 
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
