@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity implements HasComponent<ActivityC
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mNavigation.setItemIconTintList(null);
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
         fabBtn = (FloatingActionButton) findViewById(R.id.fabBtn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
