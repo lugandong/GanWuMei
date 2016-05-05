@@ -1,7 +1,7 @@
 package com.dimon.ganwumei.network;
 
 /**
- *
+ * 废弃的网络请求方法，祭奠那些年在这里度过的青春（矫情脸）
  * Created by Dimon on 2016/3/31.
  */
 //public class HttpMethods {

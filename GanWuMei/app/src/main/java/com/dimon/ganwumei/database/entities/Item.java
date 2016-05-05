@@ -3,6 +3,7 @@ package com.dimon.ganwumei.database.entities;
 import io.realm.RealmObject;
 
 /**
+ * 每日信息项目转换实体类
  * Created by Dimon on 2016/3/29.
  */
 public class Item extends RealmObject{

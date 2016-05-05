@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
+ * 日期工具类
  * Created by Dimon on 2016/3/11.
  */
 public class DateUtils {

@@ -40,7 +40,7 @@ import rx.subscriptions.CompositeSubscription;
 
 
 /**
- *
+ * BaseActivity
  * Created by Dimon on 2016/3/3.
  */
 

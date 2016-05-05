@@ -14,6 +14,7 @@ import java.util.List;
 import rx.functions.Func1;
 
 /**
+ * 用来统一处理Http的resultCode,并将RandomData的Data部分剥离出来返回给subscriber
  * Created by Dimon on 2016/5/2.
  */
 public class RandomDatatToItemsMapper implements Func1<RandomData, List<Item>> {

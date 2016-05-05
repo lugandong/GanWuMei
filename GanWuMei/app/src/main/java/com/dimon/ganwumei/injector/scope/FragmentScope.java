@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by Zane on 16/2/16.
+ * //一个自定义的范围注解,注解对象的生命周期应该遵循fragment的生命周期
+ * Created by Dimon on 2016/3/18.
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)

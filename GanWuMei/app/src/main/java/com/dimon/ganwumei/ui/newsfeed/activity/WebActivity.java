@@ -52,7 +52,9 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
+/**
+ * WebActivity
+ */
 public class WebActivity extends BaseActivity {
     private static final String EXTRA_URL = "extra_url";
     private static final String EXTRA_TITLE = "extra_title";

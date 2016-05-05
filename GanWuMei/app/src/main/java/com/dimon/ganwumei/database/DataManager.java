@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import rx.Observable;
 
 /**
- *
+ * 数据管理类
  * Created by Dimon on 2016/4/21.
  */
 public class DataManager {

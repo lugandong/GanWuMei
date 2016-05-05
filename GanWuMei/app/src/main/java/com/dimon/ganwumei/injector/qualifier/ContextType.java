@@ -5,9 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import javax.inject.Qualifier;
 
-/**
- * Created by Zane on 16/2/14.
- */
+
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ContextType {

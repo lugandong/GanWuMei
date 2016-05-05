@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.api;
 
 /**
+ * 常量类
  * Created by Dimon on 2016/5/2.
  */
 public class Constant {

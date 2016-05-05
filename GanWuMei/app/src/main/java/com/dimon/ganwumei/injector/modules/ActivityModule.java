@@ -8,6 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * 把activity暴露给相关联的类。
  * Created by Dimon on 2016/3/20.
  */
 @Module

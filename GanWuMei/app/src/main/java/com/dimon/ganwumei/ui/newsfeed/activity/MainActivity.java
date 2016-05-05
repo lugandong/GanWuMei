@@ -41,7 +41,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
+/**
+ * 主页面
+ */
 public class MainActivity extends BaseActivity implements HasComponent<ActivityComponent> {
 
     @Bind(R.id.toolbar)

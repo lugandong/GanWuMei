@@ -3,6 +3,7 @@ package com.dimon.ganwumei.database.entities;
 import java.util.List;
 
 /**
+ * EventBus 事件类
  * Created by Dimon on 2016/4/16.
  */
 public class GanWuEvent {

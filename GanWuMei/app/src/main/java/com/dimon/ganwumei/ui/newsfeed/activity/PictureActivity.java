@@ -36,6 +36,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+/**
+ * 图片预览Activity
+ */
 public class PictureActivity extends BaseActivity {
 
     public static final String EXTRA_IMAGE_URL = "image_url";

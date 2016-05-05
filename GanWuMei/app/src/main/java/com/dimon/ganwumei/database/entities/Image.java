@@ -24,7 +24,7 @@ import java.util.Date;
 import io.realm.RealmObject;
 
 /**
- *
+ * 图片类
  * Created by Dimon on 2016/3/26.
  */
 public class Image extends RealmObject{

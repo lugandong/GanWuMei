@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import java.lang.reflect.Field;
 
 /**
- *
+ * 图片尺寸工具类
  * Created by Dimon on 2016/3/24.
  */
 public class ImageSizeUtil {

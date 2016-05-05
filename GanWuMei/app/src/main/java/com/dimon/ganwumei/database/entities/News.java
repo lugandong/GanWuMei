@@ -3,6 +3,7 @@ package com.dimon.ganwumei.database.entities;
 import io.realm.RealmObject;
 
 /**
+ * 干货新闻类
  * Created by Dimon on 2016/3/23.
  */
 public class News extends RealmObject {

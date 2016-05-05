@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 关于
  * Created by Dimon on 2016/3/27.
  */
 public class AboutActivity extends BaseActivity {
