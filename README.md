@@ -34,7 +34,9 @@
 ### 关于作者我：
 
 呆毛我为大四即将毕业小朋友一枚，大四上学期开始的Android开发，至今约半年。欢迎前来勾搭哟~(✿◡‿◡)~
+
 勾搭微博：[Dimon-喰](http://weibo.com/dscott)
+
 勾搭博客：[Dimon's Program Basement](https://dimon94.github.io/)
 
 ### 关于Gan物妹：
