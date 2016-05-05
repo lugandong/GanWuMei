@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import com.dimon.ganwumei.R;
 
 /**
+ * FAB动画
  * Created by Dimon on 2016/5/2.
  */
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {

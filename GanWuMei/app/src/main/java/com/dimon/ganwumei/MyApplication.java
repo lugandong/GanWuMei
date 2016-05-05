@@ -14,7 +14,7 @@ import io.realm.RealmConfiguration;
 
 
 /**
- *
+ * MyApplication
  * Created by Dimon on 2016/3/2.
  */
 public class MyApplication extends Application {
@@ -22,7 +22,7 @@ public class MyApplication extends Application {
     public static Context AppContenxt;
     private static MyApplication application;
     public static String version;
-    //调试模式(打印日志)？
+    //调试模式(打印日志)
     private static boolean DEBUG = true;
 
     private AppComponent appComponent;

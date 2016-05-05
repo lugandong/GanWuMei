@@ -22,6 +22,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
+ * Toast工具类
  * Created by Dimon on 2016/3/27.
  */
 public class ToastUtils {

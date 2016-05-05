@@ -27,6 +27,7 @@ import android.util.AttributeSet;
 import com.dimon.ganwumei.R;
 
 /**
+ * 下拉刷新
  * Created by Dimon on 2016/3/27.
  */
 public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
