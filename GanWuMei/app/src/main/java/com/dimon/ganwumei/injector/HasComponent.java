@@ -15,9 +15,7 @@
  */
 package com.dimon.ganwumei.injector;
 
-/**
- * Created by Dimon on 2016/3/23.
- */
+
 /**
  * Interface representing a contract for clients that contains a component for dependency injection.
  */

@@ -17,7 +17,6 @@ import rx.functions.Func1;
 
 /**
  * 用来统一处理Http的resultCode,并将GanWuData的Data部分剥离出来返回给subscriber
- * <p>
  * Created by Dimon on 2016/3/29.
  */
 public class GanWuDataToItemsMapper implements Func1<GanWuData, List<Item>> {

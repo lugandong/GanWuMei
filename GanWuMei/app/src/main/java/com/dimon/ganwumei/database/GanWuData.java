@@ -24,6 +24,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
+ * 每日干货信息
  * Created by Dimon on 2016/3/26.
  */
 public class GanWuData  {

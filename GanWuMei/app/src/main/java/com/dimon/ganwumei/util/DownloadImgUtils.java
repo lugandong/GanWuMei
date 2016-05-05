@@ -14,6 +14,7 @@ import java.net.URL;
 
 
 /**
+ * 下载加载图片工具类
  * Created by Dimon on 2016/3/25.
  */
 public class DownloadImgUtils {

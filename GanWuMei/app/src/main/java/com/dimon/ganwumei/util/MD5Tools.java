@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * MD5工具类
  * Created by Dimon on 2016/3/24.
  */
 public class MD5Tools {

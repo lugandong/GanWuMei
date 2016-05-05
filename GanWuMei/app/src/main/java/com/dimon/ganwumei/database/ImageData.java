@@ -23,6 +23,7 @@ import com.dimon.ganwumei.database.entities.Image;
 import java.util.List;
 
 /**
+ * 图片listData
  * Created by Dimon on 2016/3/26.
  */
 public class ImageData extends BaseResult{

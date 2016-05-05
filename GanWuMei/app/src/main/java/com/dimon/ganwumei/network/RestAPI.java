@@ -28,6 +28,7 @@ import retrofit2.http.Path;
 import rx.Observable;
 
 /**
+ * Retrofit
  * Created by Dimon on 2016/3/11.
  */
 public interface RestAPI {

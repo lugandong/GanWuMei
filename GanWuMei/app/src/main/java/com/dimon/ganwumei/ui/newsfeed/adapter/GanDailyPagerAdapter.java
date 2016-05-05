@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ *
  * Created by Dimon on 2016/5/3.
  */
 public class GanDailyPagerAdapter extends FragmentPagerAdapter {

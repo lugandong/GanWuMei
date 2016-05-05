@@ -20,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 开始页面
  * Created by Dimon on 2016/3/24.
  */
 public class AppStart extends BaseActivity {

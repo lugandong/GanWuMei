@@ -11,7 +11,7 @@ import java.util.List;
 import rx.functions.Func1;
 
 /**
- *
+ * 用来统一处理Http的resultCode,并将ImageData的Data部分剥离出来返回给subscriber
  * Created by Dimon on 2016/4/20.
  */
 public class ImageToMeizhiMapper implements Func1<ImageData,List<Meizhi>> {

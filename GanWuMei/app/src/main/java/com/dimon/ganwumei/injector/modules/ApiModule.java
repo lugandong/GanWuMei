@@ -25,7 +25,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 网络接口
+ * 提供网络接口
  * Created by Dimon on 2016/3/18.
  */
 @Module

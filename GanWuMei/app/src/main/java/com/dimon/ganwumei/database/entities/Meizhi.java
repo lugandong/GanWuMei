@@ -3,6 +3,7 @@ package com.dimon.ganwumei.database.entities;
 import java.util.Date;
 
 /**
+ * 图片转Meizhi实体类
  * Created by Dimon on 2016/4/20.
  */
 public class Meizhi {

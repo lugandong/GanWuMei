@@ -1,6 +1,7 @@
 package com.dimon.ganwumei.network;
 
 /**
+ * Api错误
  * Created by Dimon on 2016/3/28.
  */
 public class ApiException extends RuntimeException {

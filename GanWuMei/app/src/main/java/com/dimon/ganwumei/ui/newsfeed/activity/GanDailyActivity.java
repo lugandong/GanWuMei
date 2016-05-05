@@ -28,6 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 干货每日详情Activity
  * Created by Dimon on 2016/3/23.
  */
 public class GanDailyActivity extends BaseActivity implements ViewPager.OnPageChangeListener, HasComponent<ActivityComponent> {
@@ -70,20 +71,15 @@ public class GanDailyActivity extends BaseActivity implements ViewPager.OnPageCh
         if (mToolbar == null || mAppBar == null) {
             throw new IllegalStateException("No toolbar");
         }
-
         mToolbar.setOnClickListener(v -> onToolbarClick());
-
         setSupportActionBar(mToolbar);
-
         if (canBack()) {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         if (Build.VERSION.SDK_INT >= 21) {
             mAppBar.setElevation(10.6f);
         }
-
         mGankDate = (Date) getIntent().getSerializableExtra(EXTRA_GAN_DATE);
         setTitle(DateUtils.toDate(mGankDate));
     }

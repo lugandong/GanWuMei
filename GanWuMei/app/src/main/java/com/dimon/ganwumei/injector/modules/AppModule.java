@@ -11,6 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * AppModule作用为提供在应用的生命周期中存活的对象
  * Created by Dimon on 2016/3/18.
  */
 @Module

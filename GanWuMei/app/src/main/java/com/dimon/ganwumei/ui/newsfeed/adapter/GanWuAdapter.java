@@ -23,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by Dimon on 2016/3/11.
  */
 public class GanWuAdapter extends RecyclerView.Adapter<GanWuAdapter.NewsViewHolder> {

@@ -14,6 +14,7 @@ import com.dimon.ganwumei.R;
 import com.dimon.ganwumei.ui.newsfeed.activity.MainActivity;
 
 /**
+ * Ui帮助类
  * Created by Dimon on 2016/3/24.
  */
 public class UiHelper {
